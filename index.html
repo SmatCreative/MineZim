@@ -295,6 +295,56 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 body.lang-zh,body.lang-zh h1,body.lang-zh h2,body.lang-zh h3,body.lang-zh h4,body.lang-zh h5{font-family:'Noto Sans SC',system-ui,sans-serif}
 .lang-modal-wrap{background:var(--surface);border-radius:var(--r-lg);width:100%;max-width:480px;margin-top:20px;overflow:hidden;padding:40px 36px;text-align:center}
 @media(max-width:480px){.lang-modal-wrap{padding:28px 20px}}
+
+/* ===== ANIMATIONS & LIFE ===== */
+html{scroll-behavior:smooth}
+.btn{position:relative;overflow:hidden;transition:all .2s cubic-bezier(.22,1,.36,1)}
+.btn:active{transform:scale(.94)!important;transition-duration:.08s}
+.btn-primary{box-shadow:0 2px 12px rgba(245,194,64,.22)}
+.btn-primary:hover{box-shadow:0 6px 22px rgba(245,194,64,.42);transform:translateY(-2px)}
+.btn-ghost:hover{transform:translateY(-1px)}
+.btn-outline:hover{transform:translateY(-1px)}
+.ripple{position:absolute;border-radius:50%;transform:scale(0);animation:mz-ripple .55s linear forwards;background:rgba(255,255,255,.28);pointer-events:none}
+@keyframes mz-ripple{to{transform:scale(5);opacity:0}}
+/* search focus lift */
+.hero-search{transition:box-shadow .22s,transform .22s}
+.hero-search:focus-within{box-shadow:0 12px 48px rgba(0,0,0,.55)!important;transform:scale(1.012)}
+/* hero tags */
+.hero-tag{transition:all .2s cubic-bezier(.22,1,.36,1)}
+.hero-tag:hover{transform:translateY(-3px) scale(1.06);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.hero-tag:active{transform:scale(.95)}
+/* cards */
+.cat-card{transition:all .24s cubic-bezier(.22,1,.36,1)}
+.cat-card:hover{transform:translateY(-6px);box-shadow:0 14px 36px rgba(0,0,0,.14)}
+.who-card{transition:all .24s cubic-bezier(.22,1,.36,1)}
+.who-card:hover{transform:translateY(-5px);box-shadow:0 10px 28px rgba(0,0,0,.1)}
+.lst-card{cursor:pointer;transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s}
+.lst-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.12)}
+.inv-card{transition:transform .22s,box-shadow .22s}
+.inv-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.1)}
+.trust-card{transition:transform .22s,box-shadow .22s;cursor:default}
+.trust-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+/* nav cats */
+.nav-cat{transition:all .15s cubic-bezier(.22,1,.36,1)}
+/* listing card actions */
+.lst-actions{display:flex;gap:8px;padding:0 14px 14px}
+.lst-actions .btn{flex:1;justify-content:center;font-size:12px;padding:7px 10px;border-radius:6px}
+/* eyebrow pulse dot */
+.eyebrow svg circle{animation:dot-pulse 2.4s ease-in-out infinite}
+@keyframes dot-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+/* investment fill bar animation */
+.inv-fill{width:0;transition:width 1.5s cubic-bezier(.22,1,.36,1)}
+/* scroll reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}
+.reveal.on{opacity:1;transform:none}
+/* toast */
+#mz-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(14px);background:#111827;color:#fff;padding:12px 22px;border-radius:12px;font-size:13.5px;font-weight:500;z-index:9999;opacity:0;transition:all .32s cubic-bezier(.22,1,.36,1);pointer-events:none;white-space:nowrap;box-shadow:0 6px 24px rgba(0,0,0,.35);max-width:90vw}
+#mz-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#mz-toast em{color:var(--gold);font-style:normal}
+/* sbtn hover */
+.sbtn{transition:all .18s;position:relative;overflow:hidden}
+.sbtn:hover{background:var(--gold-dim)}
+.sbtn:active{transform:scale(.96)}
 </style>
 
 <!-- REGISTRATION MODAL -->
@@ -561,7 +611,7 @@ body.lang-zh,body.lang-zh h1,body.lang-zh h2,body.lang-zh h3,body.lang-zh h4,bod
 </section>
 
 <!-- FEATURED LISTINGS -->
-<section class="section">
+<section class="section" id="listings-section">
   <div class="container">
     <div class="sec-hd">
       <div><h2 class="sec-title">Featured Listings</h2><p class="sec-sub">Verified and active opportunities — compliance status shown on each listing</p></div>
@@ -1249,8 +1299,21 @@ function render(f){
         <div class="seller"><div class="av">${d.si}</div>${d.seller}</div>
         <span>${d.v}</span>
       </div>
+      <div class="lst-actions">
+        <button class="btn btn-outline lst-contact" data-title="${d.t}">Contact Seller</button>
+        <button class="btn btn-primary lst-access">View Details</button>
+      </div>
     </div>
   `).join('');
+  // wire listing card buttons
+  document.querySelectorAll('.lst-contact').forEach(btn=>{
+    btn.addEventListener('click',e=>{e.stopPropagation();showToast('Sign in to contact <em>'+btn.dataset.title.split('—')[0].trim()+'</em>');});
+    btn.addEventListener('click',addRipple);
+  });
+  document.querySelectorAll('.lst-access').forEach(btn=>{
+    btn.addEventListener('click',e=>{e.stopPropagation();openRegModal();});
+    btn.addEventListener('click',addRipple);
+  });
 }
 document.getElementById('tabs').addEventListener('click',e=>{
   const t=e.target.closest('.tab');
@@ -1371,4 +1434,170 @@ document.getElementById('closeSuccess').onclick=closeModal;
 document.getElementById('navSignIn').onclick=()=>openRegModal(null);
 
 initLang();
+
+// ===== RIPPLE =====
+function addRipple(e){
+  const btn=e.currentTarget||e.target;
+  if(!btn)return;
+  const r=document.createElement('span');
+  const rect=btn.getBoundingClientRect();
+  const size=Math.max(rect.width,rect.height)*1.6;
+  r.className='ripple';
+  r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+  btn.appendChild(r);
+  r.addEventListener('animationend',()=>r.remove());
+}
+document.querySelectorAll('.btn,.sbtn').forEach(b=>b.addEventListener('click',addRipple));
+
+// ===== TOAST =====
+let _toastTimer;
+function showToast(msg,ms=3200){
+  let t=document.getElementById('mz-toast');
+  if(!t){t=document.createElement('div');t.id='mz-toast';document.body.appendChild(t);}
+  t.innerHTML=msg;
+  t.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer=setTimeout(()=>t.classList.remove('show'),ms);
+}
+
+// ===== SCROLL TO LISTINGS =====
+function goToListings(filter){
+  if(filter){
+    document.querySelectorAll('.tab').forEach(tb=>tb.classList.toggle('active',tb.dataset.f===filter));
+    render(filter);
+  }
+  const sec=document.getElementById('tabs');
+  if(sec)sec.closest('section').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ===== WIRE CATEGORY CARDS =====
+const CAT_FILTER_MAP=['chemicals','explosives','investments','mines','equipment','jobs','buyers','services'];
+document.querySelectorAll('.cat-card').forEach((card,i)=>{
+  card.addEventListener('click',e=>{
+    e.preventDefault();
+    goToListings(CAT_FILTER_MAP[i]);
+  });
+});
+
+// ===== WIRE NAV CATEGORY BUTTONS =====
+document.querySelectorAll('.nav-cat').forEach((btn,i)=>{
+  btn.addEventListener('click',()=>goToListings(CAT_FILTER_MAP[i]));
+});
+
+// ===== HERO SEARCH =====
+const heroSearchBtn=document.querySelector('.hero-search .sbtn');
+const heroInput=document.querySelector('.hero-search input');
+const heroSelect=document.querySelector('.hero-search select');
+function doHeroSearch(){
+  const q=(heroInput?.value||'').trim();
+  const sel=heroSelect?.value||'';
+  const catMap={'Chemicals & Reagents':'chemicals','Explosives':'explosives','Investment Opportunities':'investments','Buy & Sell Mines':'mines','Equipment & Machinery':'equipment','Workforce & Jobs':'jobs','Mineral Buyers':'buyers','Mining Services':'services'};
+  const f=catMap[sel]||'all';
+  goToListings(f);
+  if(q)showToast('Showing results for <em>'+q+'</em>');
+}
+heroSearchBtn?.addEventListener('click',doHeroSearch);
+heroInput?.addEventListener('keydown',e=>{if(e.key==='Enter')doHeroSearch();});
+
+// ===== HERO TAGS =====
+document.querySelectorAll('.hero-tag').forEach(tag=>{
+  tag.addEventListener('click',()=>{
+    const mineral=tag.textContent.trim();
+    if(heroInput)heroInput.value=mineral;
+    doHeroSearch();
+  });
+});
+
+// ===== CTA REGISTER BUTTON =====
+document.getElementById('ctaRegister')?.addEventListener('click',()=>openRegModal());
+
+// ===== REGISTER NAV BUTTON =====
+document.getElementById('navRegister')?.addEventListener('click',()=>openRegModal());
+
+// ===== VIEW LICENSING GUIDE =====
+document.querySelectorAll('.cta-btns .btn-outline').forEach(btn=>{
+  btn.addEventListener('click',e=>{
+    e.preventDefault();
+    document.querySelector('.comp-matrix')?.closest('section')?.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+// ===== ALL OPPORTUNITIES + VIEW ALL =====
+document.querySelectorAll('a.btn-outline[href="#"]').forEach(btn=>{
+  btn.addEventListener('click',e=>{
+    e.preventDefault();
+    const txt=btn.textContent.trim();
+    if(txt.includes('Opportunities'))goToListings('investments');
+    else goToListings('all');
+  });
+});
+
+// ===== WHO CARDS → open modal =====
+document.querySelectorAll('.who-card').forEach(card=>{
+  card.addEventListener('click',()=>openRegModal());
+});
+
+// ===== POST LISTING NAV =====
+document.getElementById('navPost')?.addEventListener('click',()=>openRegModal());
+
+// ===== STATS COUNTER ANIMATION =====
+function animateStat(el){
+  const raw=el.textContent.trim();
+  const prefix=raw.startsWith('$')?'$':'';
+  const hasM=raw.includes('M');
+  const hasPlus=raw.includes('+');
+  const num=parseFloat(raw.replace(/[^0-9.]/g,''));
+  const dur=1700;
+  const start=performance.now();
+  const tick=now=>{
+    const p=Math.min((now-start)/dur,1);
+    const eased=1-Math.pow(1-p,3);
+    const cur=Math.floor(num*eased);
+    el.textContent=prefix+(hasM?cur:cur>=1000?cur.toLocaleString():cur)+(hasM?'M':'')+(hasPlus&&p>=1?'+':hasPlus?'+':'');
+    if(p<1)requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+const statsObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.stat-num').forEach(el=>animateStat(el));
+      statsObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.5});
+const statsBar=document.querySelector('.stats-bar');
+if(statsBar)statsObs.observe(statsBar);
+
+// ===== INVESTMENT BARS ANIMATE ON SCROLL =====
+const invBarObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.inv-fill').forEach(bar=>{
+        const w=bar.style.width||bar.getAttribute('style')?.match(/width:([^;]+)/)?.[1]||'0';
+        bar.style.width='0';
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{bar.style.width=w;}));
+      });
+      invBarObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.3});
+document.querySelectorAll('.invest-grid').forEach(g=>invBarObs.observe(g));
+
+// ===== SCROLL REVEAL =====
+(function initReveal(){
+  const vh=window.innerHeight;
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);}});
+  },{threshold:0.07,rootMargin:'0px 0px -20px 0px'});
+  const sel='.who-card,.cat-card,.trust-card,.inv-card,.sec-title,.sec-sub,.cta-wrap,.comp-table,.foot-col';
+  document.querySelectorAll(sel).forEach((el,i)=>{
+    const rect=el.getBoundingClientRect();
+    if(rect.top>vh-40){
+      el.classList.add('reveal');
+      el.style.transitionDelay=(i%5)*0.07+'s';
+      obs.observe(el);
+    }
+  });
+})();
 </script>
