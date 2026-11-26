@@ -1,0 +1,1372 @@
+<title>MineZim</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#FFFFFF;--bg-alt:#FAF8F4;--surface:#FFFFFF;--surface-2:#F7F4EE;--surface-3:#EDE9E0;--fg:#14120A;--fg-2:#4A4840;--fg-3:#9A9888;--gold:#D4A843;--gold-dim:#B8841A;--gold-bg:rgba(212,168,67,.08);--gold-border:rgba(212,168,67,.22);--green:#1A6B2A;--green-bg:rgba(26,107,42,.09);--red:#8B2010;--red-bg:rgba(139,32,16,.07);--amber:#A66010;--amber-bg:rgba(166,96,16,.08);--border:rgba(0,0,0,.1);--shadow:0 2px 8px rgba(0,0,0,.07);--shadow-lg:0 8px 32px rgba(0,0,0,.12);--r:8px;--r-lg:12px;color-scheme:light}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6}
+h1,h2,h3,h4,h5{font-family:'Outfit',system-ui,sans-serif;letter-spacing:.01em;line-height:1.1;text-wrap:balance;margin:0}
+a{color:var(--gold);text-decoration:none}
+img{max-width:100%}
+button{font-family:inherit;cursor:pointer}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:200;background:var(--bg)}
+
+/* NAV */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:100;background:var(--bg);border-bottom:1px solid var(--border)}
+.nav-top{display:flex;align-items:center;gap:14px;padding-block:11px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1240px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
+.logo-mark{width:33px;height:33px;background:var(--gold);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-name{font-family:'Outfit',system-ui,sans-serif;font-weight:800;font-size:21px;letter-spacing:.03em;color:var(--fg)}
+.logo-name span{color:var(--gold)}
+.nav-search{flex:1;max-width:420px;display:flex;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.nav-search input{flex:1;border:none;background:transparent;padding:8px 13px;font-size:14px;color:var(--fg);outline:none;font-family:inherit;min-width:0}
+.nav-search input::placeholder{color:var(--fg-3)}
+.nav-search button{background:var(--gold);border:none;padding:8px 14px;color:#000;font-weight:600;font-size:13px;white-space:nowrap}
+.nav-actions{display:flex;align-items:center;gap:7px;margin-left:auto;flex-shrink:0}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 15px;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .15s;text-decoration:none;white-space:nowrap}
+.btn-ghost{background:transparent;color:var(--fg-2);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.btn-primary{background:var(--gold);color:#000}
+.btn-primary:hover{background:var(--gold-dim)}
+.btn-outline{background:transparent;color:var(--gold);border:1px solid var(--gold-border)}
+.btn-outline:hover{background:var(--gold-bg)}
+.btn-sm{padding:6px 12px;font-size:12px}
+.nav-cats-bar{border-top:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.nav-cats-bar::-webkit-scrollbar{display:none}
+.nav-cats{display:flex;gap:2px;padding:7px max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1240px;margin:0 auto}
+.nav-cat{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;font-size:13px;color:var(--fg-2);white-space:nowrap;border-radius:4px;cursor:pointer;transition:all .15s;background:none;border:none;font-family:inherit}
+.nav-cat:hover{color:var(--gold);background:var(--gold-bg)}
+.nav-cat svg{width:13px;height:13px;opacity:.6;flex-shrink:0}
+.nav-cat:hover svg{opacity:1}
+@media(max-width:768px){.nav-search{display:none}.btn-ghost{display:none}}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;padding-top:60px;padding-bottom:52px;background:var(--bg-alt)}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(212,168,67,.09) 0%,transparent 60%),repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(212,168,67,.03) 40px,rgba(212,168,67,.03) 41px);pointer-events:none}
+.hero-inner{position:relative;text-align:center;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1240px;margin:0 auto}
+.eyebrow{display:inline-flex;align-items:center;gap:6px;background:var(--gold-bg);border:1px solid var(--gold-border);border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:clamp(44px,8vw,88px);font-weight:800;color:var(--fg);margin:0 0 14px;line-height:1}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero-sub{font-size:16px;color:var(--fg-2);max-width:520px;margin:0 auto 28px;line-height:1.6}
+.hero-search{max-width:600px;margin:0 auto 24px;display:flex;background:var(--surface);border:2px solid var(--gold-border);border-radius:50px;overflow:hidden;box-shadow:var(--shadow-lg)}
+.hero-search select{background:var(--surface-2);border:none;border-right:1px solid var(--border);padding:13px 16px;color:var(--fg-2);font-size:13px;font-family:inherit;outline:none;cursor:pointer;min-width:140px}
+.hero-search input{flex:1;border:none;background:transparent;padding:13px 16px;font-size:14px;color:var(--fg);outline:none;font-family:inherit;min-width:0}
+.hero-search input::placeholder{color:var(--fg-3)}
+.hero-search .sbtn{background:var(--gold);border:none;padding:13px 24px;font-size:14px;font-weight:700;color:#000;cursor:pointer;white-space:nowrap;font-family:inherit}
+.hero-tags{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:18px}
+.hero-tag{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:13px;color:var(--fg-2);cursor:pointer;transition:all .15s}
+.hero-tag:hover{border-color:var(--gold);color:var(--gold)}
+.hero-tag .dot{width:5px;height:5px;border-radius:50%;background:var(--gold)}
+.reg-badges{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+.reg-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:var(--surface);border:1px solid var(--border);border-radius:4px;font-size:11px;color:var(--fg-3);font-weight:600;letter-spacing:.04em}
+.reg-badge .dot{width:5px;height:5px;border-radius:50%;background:var(--green)}
+
+/* STATS */
+.stats-bar{background:var(--gold);padding-block:11px}
+.stats-inner{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.stat{text-align:center;color:#000}
+.stat-num{font-family:'Outfit',system-ui,sans-serif;font-weight:800;font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+.stat-label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.7}
+
+/* SECTIONS */
+.section{padding-block:48px}
+.section-alt{background:var(--bg-alt)}
+.container{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.sec-hd{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:26px}
+.sec-title{font-size:clamp(26px,4vw,38px);font-weight:800;margin-bottom:4px}
+.sec-sub{font-size:14px;color:var(--fg-3);margin:0}
+
+/* WHO IS THIS FOR */
+.who-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:900px){.who-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.who-grid{grid-template-columns:1fr 1fr;gap:9px}}
+.who-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px 16px;display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:all .2s;text-align:left}
+.who-card:hover{border-color:var(--gold-border);transform:translateY(-2px);box-shadow:var(--shadow)}
+.who-card.selected{border-color:var(--gold);background:var(--gold-bg)}
+.who-icon{width:38px;height:38px;display:flex;align-items:center;justify-content:center;background:var(--surface-3);border-radius:9px;color:var(--gold)}
+.who-icon svg{width:20px;height:20px}
+.who-name{font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:16px}
+.who-sub{font-size:12px;color:var(--fg-3);line-height:1.4}
+.who-action{margin-top:4px}
+
+/* CATEGORIES */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+@media(max-width:900px){.cat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.cat-grid{grid-template-columns:1fr 1fr;gap:9px}}
+.cat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px 16px;display:flex;flex-direction:column;gap:9px;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--fg)}
+.cat-card:hover{border-color:var(--gold-border);box-shadow:var(--shadow);transform:translateY(-2px);text-decoration:none}
+.cat-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cat-nm{font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:16px}
+.cat-ct{font-size:12px;color:var(--fg-3)}
+.cat-arr{margin-top:auto;font-size:14px;color:var(--fg-3);transition:transform .15s,color .15s}
+.cat-card:hover .cat-arr{transform:translateX(4px);color:var(--gold)}
+.c1 .cat-icon{background:rgba(59,127,196,.14);color:#3B7FC4}
+.c2 .cat-icon{background:rgba(220,80,40,.12);color:#DC5028}
+.c3 .cat-icon{background:rgba(45,122,66,.12);color:#2D7A42}
+.c4 .cat-icon{background:rgba(212,168,67,.12);color:var(--gold)}
+.c5 .cat-icon{background:rgba(130,100,180,.12);color:#8264B4}
+.c6 .cat-icon{background:rgba(220,160,40,.12);color:#DCA028}
+.c7 .cat-icon{background:rgba(80,180,160,.12);color:#50B4A0}
+.c8 .cat-icon{background:rgba(180,100,60,.12);color:#B4643C}
+
+/* LISTINGS */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:22px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:9px 16px;font-size:13px;font-weight:600;color:var(--fg-3);cursor:pointer;border:none;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;background:none;font-family:inherit;margin-bottom:-1px}
+.tab:hover{color:var(--fg)}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.lst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:1000px){.lst-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:580px){.lst-grid{grid-template-columns:1fr}}
+.lst-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:all .2s;display:flex;flex-direction:column}
+.lst-card:hover{border-color:var(--gold-border);box-shadow:var(--shadow);transform:translateY(-2px)}
+.lst-banner{height:76px;display:flex;align-items:center;justify-content:center;position:relative}
+.lst-icon{position:relative;z-index:1;width:44px;height:44px}
+.lst-icon svg{width:100%;height:100%}
+.lst-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.06))}
+.banner-chemicals{background:linear-gradient(135deg,#EEF4FB,#D8E8F5)}
+.banner-chemicals .lst-icon{color:#3B7FC4}
+.banner-explosives{background:linear-gradient(135deg,#FDF0ED,#F4D8D2)}
+.banner-explosives .lst-icon{color:#DC5028}
+.banner-investments{background:linear-gradient(135deg,#EDF8F2,#D4EEE0)}
+.banner-investments .lst-icon{color:#2D7A42}
+.banner-mines{background:linear-gradient(135deg,#FEF8EC,#F4E8C4)}
+.banner-mines .lst-icon{color:#D4A843}
+.banner-jobs{background:linear-gradient(135deg,#F4F0FB,#E4D8F4)}
+.banner-jobs .lst-icon{color:#8264B4}
+.banner-buyers{background:linear-gradient(135deg,#FBF8EC,#F0E4B8)}
+.banner-buyers .lst-icon{color:#C49A18}
+.lst-body{padding:13px;display:flex;flex-direction:column;gap:7px;flex:1}
+.badges{display:flex;gap:5px;flex-wrap:wrap}
+.bdg{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.bdg-cat{background:var(--surface-3);color:var(--fg-2)}
+.bdg-new{background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-border)}
+.bdg-ok{background:var(--green-bg);color:var(--green)}
+.bdg-hot{background:var(--red-bg);color:var(--red)}
+.lst-title{font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:16px;line-height:1.2;color:var(--fg)}
+.lst-meta{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--fg-3)}
+.lst-price{font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:20px;color:var(--gold)}
+.lst-price small{font-size:12px;font-weight:400;color:var(--fg-3);font-family:'Inter',sans-serif}
+.lst-comp{padding:8px 13px;border-top:1px solid var(--border);display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600}
+.lst-comp svg{width:12px;height:12px;flex-shrink:0}
+.lst-comp.open{color:var(--green);background:var(--green-bg)}
+.lst-comp.licensed{color:var(--amber);background:var(--amber-bg)}
+.lst-comp.restricted{color:var(--red);background:var(--red-bg)}
+.lst-foot{padding:10px 13px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--fg-3)}
+.seller{display:flex;align-items:center;gap:6px}
+.av{width:20px;height:20px;border-radius:50%;background:var(--surface-3);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--fg-2);flex-shrink:0}
+
+/* INVEST */
+.invest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:700px){.invest-grid{grid-template-columns:1fr}}
+.inv-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;display:flex;flex-direction:column;gap:12px;cursor:pointer;transition:all .2s}
+.inv-card:hover{border-color:var(--gold-border);box-shadow:var(--shadow);transform:translateY(-2px)}
+.inv-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.inv-ico{width:44px;height:44px;background:var(--gold-bg);border:1px solid var(--gold-border);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0}
+.inv-ico svg{width:22px;height:22px}
+.inv-ask{font-family:'Outfit',system-ui,sans-serif;font-weight:800;font-size:22px;color:var(--gold);text-align:right}
+.inv-ask span{font-size:12px;font-weight:400;color:var(--fg-3);font-family:'Inter',sans-serif;display:block}
+.inv-title{font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:17px;line-height:1.2}
+.inv-details{display:flex;flex-direction:column;gap:5px}
+.inv-row{display:flex;justify-content:space-between;font-size:12px}
+.inv-row .lbl{color:var(--fg-3)}
+.inv-row .val{color:var(--fg-2);font-weight:500}
+.inv-bar{height:4px;background:var(--surface-3);border-radius:2px;overflow:hidden}
+.inv-fill{height:100%;background:var(--gold);border-radius:2px}
+.inv-funded{font-size:11px;color:var(--fg-3)}
+
+/* COMPLIANCE MATRIX */
+.comp-matrix{overflow-x:auto}
+.comp-table{width:100%;border-collapse:collapse;min-width:580px}
+.comp-table th{font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;padding:10px 14px;background:var(--surface-2);color:var(--fg-2);text-align:left;border-bottom:2px solid var(--border)}
+.comp-table td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:top}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-table tr:hover td{background:var(--surface-2)}
+.comp-ctl{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.comp-ctl svg{width:11px;height:11px;flex-shrink:0}
+.ctl-strict{background:var(--red-bg);color:var(--red)}
+.ctl-licensed{background:var(--amber-bg);color:var(--amber)}
+.ctl-open{background:var(--green-bg);color:var(--green)}
+.comp-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:3px;font-size:10px;font-weight:600;background:var(--surface-3);color:var(--fg-2);margin:2px}
+.comp-pill.required{background:var(--red-bg);color:var(--red)}
+.comp-pill.important{background:var(--amber-bg);color:var(--amber)}
+
+/* TRUST */
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:700px){.trust-grid{grid-template-columns:1fr}}
+.trust-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;display:flex;flex-direction:column;gap:11px}
+.trust-ico{width:44px;height:44px;background:var(--gold-bg);border:1px solid var(--gold-border);border-radius:9px;display:flex;align-items:center;justify-content:center;color:var(--gold)}
+.trust-title{font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:19px}
+.trust-txt{font-size:14px;color:var(--fg-2);line-height:1.6;margin:0}
+
+/* CTA */
+.cta-wrap{background:linear-gradient(135deg,var(--surface) 0%,var(--surface-2) 100%);border:1px solid var(--gold-border);border-radius:var(--r-lg);padding:44px 36px;text-align:center;position:relative;overflow:hidden}
+.cta-wrap::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 110%,rgba(212,168,67,.06),transparent);pointer-events:none}
+.cta-wrap h2{font-size:clamp(26px,4vw,44px);font-weight:800;margin-bottom:10px}
+.cta-wrap p{color:var(--fg-2);font-size:15px;margin:0 auto 24px;max-width:480px}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+.footer{background:var(--bg-alt);border-top:1px solid var(--border);padding-block:40px 24px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px}
+@media(max-width:800px){.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.footer-grid{grid-template-columns:1fr}}
+.foot-brand p{font-size:13px;color:var(--fg-3);line-height:1.6;margin:11px 0 14px;max-width:280px}
+.foot-col h4{font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-2);margin:0 0 11px}
+.foot-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+.foot-col ul li a{font-size:13px;color:var(--fg-3);transition:color .15s}
+.foot-col ul li a:hover{color:var(--gold)}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:18px;border-top:1px solid var(--border);font-size:12px;color:var(--fg-3);flex-wrap:wrap}
+.comp-note{font-size:11px;color:var(--fg-3);background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:11px 14px;margin-top:14px;line-height:1.5;display:flex;align-items:flex-start;gap:9px}
+.comp-note svg{width:15px;height:15px;flex-shrink:0;margin-top:1px;color:var(--amber)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:500;display:flex;align-items:flex-start;justify-content:center;padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-left,0px)) 20px max(16px,env(safe-area-inset-right,0px));overflow-y:auto}
+.modal-overlay[hidden]{display:none!important}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);width:100%;max-width:780px;margin-top:20px;overflow:hidden}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border)}
+.modal-head h2{font-size:22px;font-weight:800;margin:0}
+.modal-close{background:var(--surface-3);border:none;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--fg-2);flex-shrink:0}
+.modal-close:hover{background:var(--border);color:var(--fg)}
+.modal-close svg{width:12px;height:12px}
+.modal-body{padding:22px}
+.modal-step{display:none}
+.modal-step.active{display:block}
+.step-label{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3);margin-bottom:16px}
+.steps-ind{display:flex;align-items:center;gap:0;margin-bottom:24px}
+.step-dot{display:flex;align-items:center;gap:0;flex:1}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--fg-3);flex-shrink:0;background:var(--surface-2)}
+.step-num.done{background:var(--gold);border-color:var(--gold);color:#000}
+.step-num.active{border-color:var(--gold);color:var(--gold)}
+.step-line{flex:1;height:2px;background:var(--border);margin:0 4px}
+.step-line.done{background:var(--gold)}
+.role-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+@media(max-width:600px){.role-grid{grid-template-columns:repeat(2,1fr)}}
+.role-card{background:var(--surface-2);border:2px solid var(--border);border-radius:var(--r);padding:14px 12px;cursor:pointer;transition:all .15s;text-align:center}
+.role-card:hover{border-color:var(--gold-border);background:var(--gold-bg)}
+.role-card.selected{border-color:var(--gold);background:var(--gold-bg)}
+.role-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--surface-3);border-radius:8px;color:var(--gold);margin:0 auto 7px}
+.role-card.selected .role-icon,.role-card:hover .role-icon{background:var(--gold-bg)}
+.role-icon svg{width:18px;height:18px}
+.role-nm{font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:14px;line-height:1.2}
+.docs-list{display:flex;flex-direction:column;gap:7px;margin:14px 0}
+.doc-item{display:flex;align-items:flex-start;gap:9px;padding:10px 13px;background:var(--surface-2);border-radius:var(--r);font-size:13px}
+.doc-req{flex-shrink:0;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px}
+.doc-req.must{background:var(--red);color:#fff}
+.doc-req.opt{background:var(--surface-3);color:var(--fg-2)}
+.doc-txt{flex:1;min-width:0}
+.doc-name{font-weight:500;color:var(--fg)}
+.doc-note{font-size:11px;color:var(--fg-3);margin-top:2px}
+.access-list{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.access-item{display:flex;align-items:center;gap:8px;font-size:13px}
+.access-tick{width:18px;height:18px;border-radius:50%;background:var(--green-bg);color:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.access-tick svg{width:10px;height:10px}
+.access-cross{width:18px;height:18px;border-radius:50%;background:var(--red-bg);color:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.access-cross svg{width:10px;height:10px}
+.modal-actions{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.ctrl-warning{background:var(--red-bg);border:1px solid rgba(154,39,24,.3);border-radius:var(--r);padding:12px 14px;font-size:13px;color:var(--red);margin-bottom:14px;display:flex;gap:9px;align-items:flex-start}
+.ctrl-warning svg{width:18px;height:18px;flex-shrink:0;margin-top:1px}
+.success-ico{width:72px;height:72px;background:var(--green-bg);border:2px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--green);margin:0 auto 16px}
+.success-ico svg{width:32px;height:32px}
+
+/* Legend icons */
+.leg-ico{display:inline-flex;align-items:center;gap:5px}
+.leg-ico svg{width:12px;height:12px}
+
+/* Mobile */
+@media(max-width:600px){
+  .sec-hd{flex-direction:column;align-items:flex-start}
+  .cta-wrap{padding:28px 18px}
+  .stats-inner{gap:14px}
+  .hero-search{flex-direction:column;border-radius:var(--r-lg)}
+  .hero-search select{border-right:none;border-bottom:1px solid var(--border)}
+}
+
+/* LANGUAGE */
+.lang-toggle{display:flex;align-items:center;border:1px solid var(--border);border-radius:6px;overflow:hidden;flex-shrink:0}
+.lang-pill{padding:6px 10px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--fg-3);font-family:inherit;transition:all .15s;white-space:nowrap}
+.lang-pill.active{background:var(--gold);color:#000}
+.lang-opt-btn{background:var(--surface-2);border:2px solid var(--border);border-radius:var(--r-lg);padding:22px 16px;cursor:pointer;font-family:inherit;transition:all .15s;text-align:center;width:100%}
+.lang-opt-btn:hover,.lang-opt-btn.selected{border-color:var(--gold);background:var(--gold-bg)}
+body.lang-zh,body.lang-zh h1,body.lang-zh h2,body.lang-zh h3,body.lang-zh h4,body.lang-zh h5{font-family:'Noto Sans SC',system-ui,sans-serif}
+.lang-modal-wrap{background:var(--surface);border-radius:var(--r-lg);width:100%;max-width:480px;margin-top:20px;overflow:hidden;padding:40px 36px;text-align:center}
+@media(max-width:480px){.lang-modal-wrap{padding:28px 20px}}
+</style>
+
+<!-- REGISTRATION MODAL -->
+<div class="modal-overlay" id="regModal" hidden>
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div id="modalSubLabel" style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);margin-bottom:3px">Create Account</div>
+        <h2 id="modalTitleEl">Join MineZim</h2>
+      </div>
+      <button class="modal-close" id="modalClose"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <!-- STEP 0 — Language -->
+      <div class="modal-step active" id="ms0">
+        <div style="text-align:center;padding:16px 0 24px">
+          <div style="font-size:24px;font-weight:800;margin:0 0 7px" data-i18n="regLangTitle">Choose Your Language</div>
+          <div style="font-size:13px;color:var(--fg-3);margin:0 0 28px" data-i18n="regLangSub">Select the language for your account</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:380px;margin:0 auto">
+            <button class="lang-opt-btn" id="regLangEn" onclick="pickLangAndContinue('en')">
+              <div style="font-size:30px;font-weight:800;color:var(--gold);margin-bottom:7px">EN</div>
+              <div style="font-size:16px;font-weight:700">English</div>
+              <div style="font-size:11px;color:var(--fg-3);margin-top:4px">Full platform in English</div>
+            </button>
+            <button class="lang-opt-btn" id="regLangZh" onclick="pickLangAndContinue('zh')">
+              <div style="font-size:30px;font-weight:800;color:var(--gold);margin-bottom:7px">中</div>
+              <div style="font-size:16px;font-weight:700">中文</div>
+              <div style="font-size:11px;color:var(--fg-3);margin-top:4px">中文全平台</div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps-ind" id="stepsInd" hidden>
+        <div class="step-dot"><div class="step-num active" id="sn1">1</div></div>
+        <div class="step-line" id="sl1"></div>
+        <div class="step-dot"><div class="step-num" id="sn2">2</div></div>
+        <div class="step-line" id="sl2"></div>
+        <div class="step-dot"><div class="step-num" id="sn3">3</div></div>
+      </div>
+
+      <!-- STEP 1 -->
+      <div class="modal-step" id="ms1">
+        <div class="step-label">Step 1 of 3 — Choose your account type</div>
+        <div class="role-grid" id="roleGrid"></div>
+        <div style="display:flex;justify-content:flex-end">
+          <button class="btn btn-primary" id="toStep2" disabled>Next: View Requirements</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="modal-step" id="ms2">
+        <div class="step-label">Step 2 of 3 — Required documents &amp; licenses</div>
+        <div id="roleDisplay" style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:12px 14px;background:var(--surface-2);border-radius:var(--r)">
+          <div id="roleIcoDisp" class="who-icon" style="flex-shrink:0"></div>
+          <div><div id="roleName" style="font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:18px"></div><div id="roleSub" style="font-size:12px;color:var(--fg-3)"></div></div>
+        </div>
+        <div id="ctrlWarn" class="ctrl-warning" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.5L1 19A2 2 0 003 22h18a2 2 0 001.7-3L13.7 3.5a2 2 0 00-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17.5" r="1" fill="currentColor" stroke="none"/></svg>
+          <div id="ctrlWarnTxt"></div>
+        </div>
+        <div id="ms2DocsTitle" style="font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:16px;margin-bottom:4px">Documents Required for Verification</div>
+        <div id="docLegendRow" style="font-size:12px;color:var(--fg-3);margin-bottom:4px"><span style="display:inline-flex;align-items:center;gap:4px"><span class="doc-req must" style="width:14px;height:14px;font-size:9px">R</span> Required before listing or purchasing</span> &nbsp; <span style="display:inline-flex;align-items:center;gap:4px"><span class="doc-req opt" style="width:14px;height:14px;font-size:9px">O</span> Optional / conditional</span></div>
+        <div class="docs-list" id="docsList"></div>
+        <div id="ms2AccessTitle" style="font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:16px;margin-top:16px;margin-bottom:4px">What you can do on MineZim</div>
+        <div class="access-list" id="accessList"></div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost btn-sm" id="backToStep1">Back</button>
+          <button class="btn btn-primary" id="toStep3">Continue to Registration</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="modal-step" id="ms3">
+        <div class="step-label">Step 3 of 3 — Your details</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <label style="font-size:12px;font-weight:600;color:var(--fg-2)">Full Name / Company Name</label>
+            <input id="f-name" style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;color:var(--fg);font-size:14px;font-family:inherit;outline:none;width:100%" placeholder="e.g. Sunshine Mining (Pvt) Ltd">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <label style="font-size:12px;font-weight:600;color:var(--fg-2)">Email Address</label>
+            <input id="f-email" type="email" style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;color:var(--fg);font-size:14px;font-family:inherit;outline:none;width:100%" placeholder="email@company.co.zw">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <label style="font-size:12px;font-weight:600;color:var(--fg-2)">Phone (WhatsApp)</label>
+            <input id="f-phone" style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;color:var(--fg);font-size:14px;font-family:inherit;outline:none;width:100%" placeholder="+263 7X XXX XXXX">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <label style="font-size:12px;font-weight:600;color:var(--fg-2)">Province</label>
+            <select id="f-prov" style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;color:var(--fg);font-size:14px;font-family:inherit;outline:none;width:100%">
+              <option value="">Select province…</option>
+              <option>Harare Metropolitan</option>
+              <option>Bulawayo Metropolitan</option>
+              <option>Midlands</option>
+              <option>Mashonaland West</option>
+              <option>Mashonaland Central</option>
+              <option>Mashonaland East</option>
+              <option>Matabeleland North</option>
+              <option>Matabeleland South</option>
+              <option>Manicaland</option>
+              <option>Masvingo</option>
+            </select>
+          </div>
+          <div style="grid-column:1/-1;display:flex;flex-direction:column;gap:4px">
+            <label style="font-size:12px;font-weight:600;color:var(--fg-2)">Password</label>
+            <input id="f-pass" type="password" style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;color:var(--fg);font-size:14px;font-family:inherit;outline:none;width:100%" placeholder="Create a strong password">
+          </div>
+        </div>
+        <div id="regInfoBox" style="background:var(--gold-bg);border:1px solid var(--gold-border);border-radius:var(--r);padding:12px 14px;font-size:13px;color:var(--fg-2);margin-top:14px;line-height:1.6">
+          After registration you will be prompted to upload your required documents. Your account will be reviewed within <strong style="color:var(--fg)">1–2 business days</strong>. Access to controlled listings is granted only after verification is complete.
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost btn-sm" id="backToStep2">Back</button>
+          <button class="btn btn-primary" id="submitReg">Create Account &amp; Upload Documents</button>
+        </div>
+      </div>
+
+      <!-- STEP 4 SUCCESS -->
+      <div class="modal-step" id="ms4">
+        <div style="text-align:center;padding:28px 0">
+          <div class="success-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3 id="successTitle" style="font-size:28px;font-weight:800;margin-bottom:8px">Account Created</h3>
+          <p id="successBody" style="color:var(--fg-2);font-size:14px;max-width:380px;margin:0 auto 20px">Check your email for a verification link. Upload your documents from your dashboard to unlock full platform access.</p>
+          <button class="btn btn-primary" id="closeSuccess">Go to Dashboard</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WELCOME LANGUAGE MODAL -->
+<div class="modal-overlay" id="langModal" hidden>
+  <div class="lang-modal-wrap">
+    <a href="#" class="logo" style="justify-content:center;margin-bottom:22px;text-decoration:none">
+      <div class="logo-mark"><svg width="17" height="17" viewBox="0 0 20 20" fill="none"><path d="M3 17L10 3L17 17" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 11.5H13.5" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <span class="logo-name">Mine<span>Zim</span></span>
+    </a>
+    <h2 style="font-size:26px;font-weight:800;margin:0 0 8px">Welcome to MineZim<br><span style="font-size:18px;font-weight:700;font-family:'Noto Sans SC',system-ui,sans-serif;color:var(--gold)">欢迎来到 MineZim</span></h2>
+    <p style="color:var(--fg-3);font-size:14px;margin:0 0 32px">Select your language · 请选择您的语言</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <button class="lang-opt-btn" onclick="chooseLang('en')">
+        <div style="font-size:32px;font-weight:800;color:var(--gold);margin-bottom:8px">EN</div>
+        <div style="font-size:17px;font-weight:700">English</div>
+        <div style="font-size:12px;color:var(--fg-3);margin-top:5px">Full platform in English</div>
+      </button>
+      <button class="lang-opt-btn" onclick="chooseLang('zh')">
+        <div style="font-size:32px;font-weight:800;color:var(--gold);margin-bottom:8px">中</div>
+        <div style="font-size:17px;font-weight:700">中文</div>
+        <div style="font-size:12px;color:var(--fg-3);margin-top:5px">中文全平台</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-top">
+    <a href="#" class="logo">
+      <div class="logo-mark"><svg width="17" height="17" viewBox="0 0 20 20" fill="none"><path d="M3 17L10 3L17 17" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 11.5H13.5" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <span class="logo-name">Mine<span>Zim</span></span>
+    </a>
+    <div class="nav-search">
+      <input type="text" placeholder="Search chemicals, mines, investors…">
+      <button>Search</button>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button class="lang-pill active" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lang-pill" data-lang="zh" onclick="setLang('zh')">中文</button>
+      </div>
+      <button class="btn btn-ghost" id="navSignIn" data-i18n="navSignIn">Sign In</button>
+      <button class="btn btn-outline" id="navRegister" data-i18n="navRegister">Register</button>
+      <button class="btn btn-primary" id="navPost" data-i18n="navPost">Post Listing</button>
+    </div>
+  </div>
+  <div class="nav-cats-bar">
+    <div class="nav-cats">
+      <button class="nav-cat">All</button>
+      <button class="nav-cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M9.5 3v7.5L5 18a2 2 0 001.9 2.5h10.2A2 2 0 0019 18l-4.5-7.5V3"/><line x1="7.5" y1="13" x2="16.5" y2="13"/></svg>Chemicals</button>
+      <button class="nav-cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Explosives</button>
+      <button class="nav-cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 8 12 13 14.5 21 6"/><polyline points="17 6 21 6 21 10"/></svg>Investments</button>
+      <button class="nav-cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.7 2 6 4.7 6 8c0 5.5 6 13 6 13s6-7.5 6-13c0-3.3-2.7-6-6-6z"/><circle cx="12" cy="8" r="2.5"/></svg>Mine Sales</button>
+      <button class="nav-cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l2.9-2.9A5.5 5.5 0 0113.7 14l-6 6a2 2 0 01-2.8-2.8l6-6A5.5 5.5 0 0117.9 4z"/></svg>Equipment</button>
+      <button class="nav-cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M6.5 21v-2a4.5 4.5 0 014.5-4.5h2a4.5 4.5 0 014.5 4.5v2"/></svg>Workforce</button>
+      <button class="nav-cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 20 9 12 22 4 9"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="8.5" y1="9" x2="12" y2="2"/><line x1="15.5" y1="9" x2="12" y2="2"/></svg>Mineral Buyers</button>
+      <button class="nav-cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l2.9-2.9A5.5 5.5 0 0113.7 14l-6 6a2 2 0 01-2.8-2.8l6-6A5.5 5.5 0 0117.9 4z"/></svg>Services</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>Zimbabwe's #1 Mining Marketplace</div>
+    <h1>Connect. Trade.<br><em>Mine Zimbabwe.</em></h1>
+    <p class="hero-sub">Find chemicals, explosives, investors, buyers, workers, and mine assets — one compliant platform for Zimbabwe's entire mining value chain.</p>
+    <div class="hero-search">
+      <select><option>All Categories</option><option>Chemicals &amp; Reagents</option><option>Explosives</option><option>Investment Opportunities</option><option>Buy &amp; Sell Mines</option><option>Equipment &amp; Machinery</option><option>Workforce &amp; Jobs</option><option>Mineral Buyers</option><option>Mining Services</option></select>
+      <input type="text" placeholder="e.g. sodium cyanide, gold concession, geologist…">
+      <button class="sbtn">Search</button>
+    </div>
+    <div class="hero-tags">
+      <span class="hero-tag"><span class="dot"></span>Gold</span>
+      <span class="hero-tag"><span class="dot"></span>Diamonds</span>
+      <span class="hero-tag"><span class="dot"></span>Platinum</span>
+      <span class="hero-tag"><span class="dot"></span>Chrome</span>
+      <span class="hero-tag"><span class="dot"></span>Lithium</span>
+      <span class="hero-tag"><span class="dot"></span>Coal</span>
+      <span class="hero-tag"><span class="dot"></span>Nickel</span>
+    </div>
+    <div class="reg-badges">
+      <span class="reg-badge"><span class="dot"></span>MMCZ Registered</span>
+      <span class="reg-badge"><span class="dot"></span>EMA Compliant</span>
+      <span class="reg-badge"><span class="dot"></span>ZMF Partner</span>
+      <span class="reg-badge"><span class="dot"></span>MCAZ Licensed Sellers</span>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat"><div class="stat-num">3,240+</div><div class="stat-label">Active Listings</div></div>
+    <div class="stat"><div class="stat-num">1,180+</div><div class="stat-label">Verified Users</div></div>
+    <div class="stat"><div class="stat-num">340+</div><div class="stat-label">Active Investors</div></div>
+    <div class="stat"><div class="stat-num">$42M+</div><div class="stat-label">Deals Facilitated</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Provinces</div></div>
+  </div>
+</div>
+
+<!-- WHO IS THIS FOR -->
+<section class="section">
+  <div class="container">
+    <div class="sec-hd">
+      <div>
+        <h2 class="sec-title">Who Is MineZim For?</h2>
+        <p class="sec-sub">Register as the account type that fits your role — each type has specific verification requirements</p>
+      </div>
+    </div>
+    <div class="who-grid" id="whoGrid"></div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="sec-hd">
+      <div><h2 class="sec-title">Browse by Category</h2><p class="sec-sub">Everything Zimbabwe's mining industry needs</p></div>
+    </div>
+    <div class="cat-grid">
+      <a href="#" class="cat-card c1"><div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M9.5 3v7.5L5 18a2 2 0 001.9 2.5h10.2A2 2 0 0019 18l-4.5-7.5V3"/><line x1="7.5" y1="13" x2="16.5" y2="13"/></svg></div><div class="cat-nm">Chemicals &amp; Reagents</div><div class="cat-ct">482 listings · License required</div><div class="cat-arr">→</div></a>
+      <a href="#" class="cat-card c2"><div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="cat-nm">Explosives &amp; Blasting</div><div class="cat-ct">134 listings · Strictly controlled</div><div class="cat-arr">→</div></a>
+      <a href="#" class="cat-card c3"><div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 8 12 13 14.5 21 6"/><polyline points="17 6 21 6 21 10"/></svg></div><div class="cat-nm">Investment Opportunities</div><div class="cat-ct">218 listings · Registered users</div><div class="cat-arr">→</div></a>
+      <a href="#" class="cat-card c4"><div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.7 2 6 4.7 6 8c0 5.5 6 13 6 13s6-7.5 6-13c0-3.3-2.7-6-6-6z"/><circle cx="12" cy="8" r="2.5"/></svg></div><div class="cat-nm">Buy &amp; Sell Mines</div><div class="cat-ct">376 listings · MMCZ required</div><div class="cat-arr">→</div></a>
+      <a href="#" class="cat-card c5"><div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l2.9-2.9A5.5 5.5 0 0113.7 14l-6 6a2 2 0 01-2.8-2.8l6-6A5.5 5.5 0 0117.9 4z"/></svg></div><div class="cat-nm">Equipment &amp; Machinery</div><div class="cat-ct">894 listings · Open to all</div><div class="cat-arr">→</div></a>
+      <a href="#" class="cat-card c6"><div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M6.5 21v-2a4.5 4.5 0 014.5-4.5h2a4.5 4.5 0 014.5 4.5v2"/></svg></div><div class="cat-nm">Workforce &amp; Jobs</div><div class="cat-ct">612 listings · Open to all</div><div class="cat-arr">→</div></a>
+      <a href="#" class="cat-card c7"><div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 20 9 12 22 4 9"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="8.5" y1="9" x2="12" y2="2"/><line x1="15.5" y1="9" x2="12" y2="2"/></svg></div><div class="cat-nm">Mineral Buyers</div><div class="cat-ct">287 listings · MMCZ buyers only</div><div class="cat-arr">→</div></a>
+      <a href="#" class="cat-card c8"><div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l2.9-2.9A5.5 5.5 0 0113.7 14l-6 6a2 2 0 01-2.8-2.8l6-6A5.5 5.5 0 0117.9 4z"/><path d="M17.5 2l4.5 4.5"/></svg></div><div class="cat-nm">Mining Services</div><div class="cat-ct">193 listings · Open to all</div><div class="cat-arr">→</div></a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED LISTINGS -->
+<section class="section">
+  <div class="container">
+    <div class="sec-hd">
+      <div><h2 class="sec-title">Featured Listings</h2><p class="sec-sub">Verified and active opportunities — compliance status shown on each listing</p></div>
+      <a href="#" class="btn btn-outline" style="flex-shrink:0">View All</a>
+    </div>
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-f="all">All</button>
+      <button class="tab" data-f="chemicals">Chemicals</button>
+      <button class="tab" data-f="explosives">Explosives</button>
+      <button class="tab" data-f="investments">Investments</button>
+      <button class="tab" data-f="mines">Mine Sales</button>
+      <button class="tab" data-f="jobs">Jobs</button>
+      <button class="tab" data-f="buyers">Mineral Buyers</button>
+    </div>
+    <div class="lst-grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- INVESTMENT HIGHLIGHTS -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="sec-hd">
+      <div><h2 class="sec-title">Open Investment Rounds</h2><p class="sec-sub">Mines and projects actively seeking capital — verified mine titles on file</p></div>
+      <a href="#" class="btn btn-outline" style="flex-shrink:0">All Opportunities</a>
+    </div>
+    <div class="invest-grid">
+      <div class="inv-card">
+        <div class="inv-top">
+          <div class="inv-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20L9 8l5 7 3-4.5L22 20H3z"/></svg></div>
+          <div><div class="inv-ask">$2.1M <span>sought</span></div><span class="bdg bdg-ok">40% Equity</span></div>
+        </div>
+        <div class="inv-title">Mhondoro Chrome Mine — Mashonaland West</div>
+        <div class="inv-details">
+          <div class="inv-row"><span class="lbl">Mineral</span><span class="val">Chrome Ore</span></div>
+          <div class="inv-row"><span class="lbl">Annual Output</span><span class="val">12,000 t/yr</span></div>
+          <div class="inv-row"><span class="lbl">Tenure</span><span class="val">Special Grant</span></div>
+          <div class="inv-row"><span class="lbl">EMA Status</span><span class="val">Compliant</span></div>
+        </div>
+        <div class="inv-bar"><div class="inv-fill" style="width:62%"></div></div>
+        <div class="inv-funded">62% committed · Requires ZIMRA tax registration to invest</div>
+      </div>
+      <div class="inv-card">
+        <div class="inv-top">
+          <div class="inv-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <div><div class="inv-ask">$500K <span>sought</span></div><span class="bdg bdg-new">Seed Round</span></div>
+        </div>
+        <div class="inv-title">Bikita Lithium Exploration Project — Masvingo</div>
+        <div class="inv-details">
+          <div class="inv-row"><span class="lbl">Mineral</span><span class="val">Lithium Spodumene</span></div>
+          <div class="inv-row"><span class="lbl">Stage</span><span class="val">Exploration</span></div>
+          <div class="inv-row"><span class="lbl">Tenure</span><span class="val">Mining Location</span></div>
+          <div class="inv-row"><span class="lbl">Area</span><span class="val">240 hectares</span></div>
+        </div>
+        <div class="inv-bar"><div class="inv-fill" style="width:28%"></div></div>
+        <div class="inv-funded">28% committed · RBZ approval required for foreign investors</div>
+      </div>
+      <div class="inv-card">
+        <div class="inv-top">
+          <div class="inv-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 8 12 13 14.5 21 6"/><polyline points="17 6 21 6 21 10"/></svg></div>
+          <div><div class="inv-ask">$850K <span>sought</span></div><span class="bdg bdg-ok">JV Partner</span></div>
+        </div>
+        <div class="inv-title">Midlands Gold Processing Plant Expansion</div>
+        <div class="inv-details">
+          <div class="inv-row"><span class="lbl">Mineral</span><span class="val">Gold</span></div>
+          <div class="inv-row"><span class="lbl">Output</span><span class="val">820 oz/yr</span></div>
+          <div class="inv-row"><span class="lbl">Tenure</span><span class="val">Mining Location</span></div>
+          <div class="inv-row"><span class="lbl">MMCZ Status</span><span class="val">Registered</span></div>
+        </div>
+        <div class="inv-bar"><div class="inv-fill" style="width:81%"></div></div>
+        <div class="inv-funded">81% committed · Closing soon</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPLIANCE MATRIX -->
+<section class="section">
+  <div class="container">
+    <div class="sec-hd">
+      <div><h2 class="sec-title">Licensing &amp; Compliance Requirements</h2><p class="sec-sub">What buyers and sellers must hold to transact on MineZim</p></div>
+    </div>
+    <div class="comp-matrix">
+      <table class="comp-table">
+        <thead>
+          <tr><th>Category</th><th>Access Level</th><th>Buyer Must Hold</th><th>Seller Must Hold</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Explosives</strong><br><span style="font-size:12px;color:var(--fg-3)">ANFO, Detonators, Emulsion</span></td>
+            <td><span class="comp-ctl ctl-strict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Strictly Controlled</span></td>
+            <td><span class="comp-pill required">Chief Inspector of Explosives Permit</span><span class="comp-pill required">Mine Manager Certificate</span><span class="comp-pill required">ZRP Clearance Letter</span><span class="comp-pill required">Mining Title on file</span></td>
+            <td><span class="comp-pill required">Chief Inspector of Explosives Licence</span><span class="comp-pill required">Approved Magazine/Storage</span><span class="comp-pill required">ZRP Clearance</span><span class="comp-pill required">Approved Delivery Vehicles</span></td>
+          </tr>
+          <tr>
+            <td><strong>Cyanide &amp; Mercury</strong><br><span style="font-size:12px;color:var(--fg-3)">NaCN, HgCl2, controlled reagents</span></td>
+            <td><span class="comp-ctl ctl-strict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Strictly Controlled</span></td>
+            <td><span class="comp-pill required">MCAZ Controlled Substance License</span><span class="comp-pill required">EMA Certificate</span><span class="comp-pill required">Mining Company CR14</span><span class="comp-pill required">MMCZ Registration</span></td>
+            <td><span class="comp-pill required">MCAZ Manufacturing/Import Licence</span><span class="comp-pill required">EMA Compliance Certificate</span><span class="comp-pill required">CR14 + ITF263</span></td>
+          </tr>
+          <tr>
+            <td><strong>Other Chemicals</strong><br><span style="font-size:12px;color:var(--fg-3)">Activated carbon, lime, acids</span></td>
+            <td><span class="comp-ctl ctl-licensed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l8 3v6c0 5-8 10-8 10S4 16 4 11V5l8-3z"/></svg>Licensed Users</span></td>
+            <td><span class="comp-pill required">Mining Company CR14 or AGML</span><span class="comp-pill required">MMCZ Registration</span></td>
+            <td><span class="comp-pill required">CR14 + Tax Clearance ITF263</span><span class="comp-pill">EMA Certificate (recommended)</span></td>
+          </tr>
+          <tr>
+            <td><strong>Gold (Artisanal)</strong><br><span style="font-size:12px;color:var(--fg-3)">Raw gold, dore bar, alluvial</span></td>
+            <td><span class="comp-ctl ctl-strict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Strictly Controlled</span></td>
+            <td><span class="comp-pill required">MMCZ Mineral Buyer Licence</span><span class="comp-pill required">Fidelity Printers &amp; Refiners Licence</span><span class="comp-pill required">CR14 + ITF263</span></td>
+            <td><span class="comp-pill required">AGML or Mining Location Certificate</span><span class="comp-pill required">MMCZ Registration</span><span class="comp-pill required">Must sell via MMCZ/Fidelity channel</span></td>
+          </tr>
+          <tr>
+            <td><strong>Diamonds</strong><br><span style="font-size:12px;color:var(--fg-3)">Rough, melee, industrial</span></td>
+            <td><span class="comp-ctl ctl-strict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Strictly Controlled</span></td>
+            <td><span class="comp-pill required">KPCS Certificate (Kimberley Process)</span><span class="comp-pill required">MMCZ Mineral Buyer Licence</span><span class="comp-pill required">CR14 + ITF263</span></td>
+            <td><span class="comp-pill required">Mining Title — ZCDC/EDD concession</span><span class="comp-pill required">MMCZ Registration</span><span class="comp-pill required">KPCS Certificate</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mine Sales / Concessions</strong><br><span style="font-size:12px;color:var(--fg-3)">Claims, special grants, locations</span></td>
+            <td><span class="comp-ctl ctl-licensed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l8 3v6c0 5-8 10-8 10S4 16 4 11V5l8-3z"/></svg>Licensed Users</span></td>
+            <td><span class="comp-pill required">MMCZ Registration</span><span class="comp-pill required">ZIMRA Tax Registration</span><span class="comp-pill">RBZ Approval (foreign buyers)</span></td>
+            <td><span class="comp-pill required">Valid Mining Title / Special Grant</span><span class="comp-pill required">Ministry of Mines transfer consent</span><span class="comp-pill required">EMA clearance certificate</span></td>
+          </tr>
+          <tr>
+            <td><strong>Equipment &amp; Machinery</strong><br><span style="font-size:12px;color:var(--fg-3)">Drills, trucks, crushers, mills</span></td>
+            <td><span class="comp-ctl ctl-open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>Open to Registered</span></td>
+            <td><span class="comp-pill">MineZim registered account</span></td>
+            <td><span class="comp-pill required">CR14 or National ID</span><span class="comp-pill">Proof of ownership / invoice</span></td>
+          </tr>
+          <tr>
+            <td><strong>Jobs &amp; Workforce</strong><br><span style="font-size:12px;color:var(--fg-3)">Vacancies, worker profiles, CVs</span></td>
+            <td><span class="comp-ctl ctl-open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>Open to Registered</span></td>
+            <td><span class="comp-pill">MineZim registered account</span><span class="comp-pill">Valid National ID</span></td>
+            <td><span class="comp-pill required">NSSA Employer Registration (employers)</span><span class="comp-pill required">Mining title or authority (employers)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:12px;font-size:12px;color:var(--fg-3);display:flex;gap:16px;flex-wrap:wrap">
+      <span class="leg-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--red)"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Strictly Controlled — Police/Ministry verification, 3–5 day approval</span>
+      <span class="leg-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--amber)"><path d="M12 2l8 3v6c0 5-8 10-8 10S4 16 4 11V5l8-3z"/></svg>Licensed — Document upload, 1–2 day approval</span>
+      <span class="leg-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--green)"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>Open — Email verification only</span>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="sec-hd">
+      <div><h2 class="sec-title">Built for Zimbabwe Mining</h2><p class="sec-sub">Compliant, secure, and industry-specific from the ground up</p></div>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="trust-ico"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 21s7-4 7-9V4.5l-7-3-7 3V12c0 5 7 9 7 9z"/><polyline points="8 11 10 13 14 9"/></svg></div>
+        <div class="trust-title">Verified Accounts</div>
+        <p class="trust-txt">Every user is verified against their account type. Companies submit CR14 + ITF263. Miners submit AGML or Mining Location certificates. Explosives access requires ZRP clearance and Chief Inspector permit.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-ico"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="10" width="18" height="11" rx="2"/><path d="M6 10V7a5 5 0 0110 0v3"/></svg></div>
+        <div class="trust-title">Compliance Gates</div>
+        <p class="trust-txt">Controlled substance listings are hidden from unverified users. Attempting to contact a seller of explosives or cyanide without the correct license on file is blocked and flagged automatically.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-ico"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="9"/><path d="M11 6v5l3 3"/></svg></div>
+        <div class="trust-title">Regulatory Framework</div>
+        <p class="trust-txt">All listings enforced under the Mines and Minerals Act [Chapter 21:05], Explosives Act [Chapter 10:08], EMA Act [Chapter 20:27], and ZIMRA regulations. MMCZ oversight on all mineral transactions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+  <div class="container">
+    <div class="cta-wrap">
+      <h2>Ready to Join MineZim?</h2>
+      <p>Register your account, upload your documents, and connect with Zimbabwe's mining community — buyers, sellers, investors, and workers in one place.</p>
+      <div class="cta-btns">
+        <button class="btn btn-primary" style="font-size:15px;padding:13px 26px" id="ctaRegister">Register Your Account</button>
+        <button class="btn btn-outline" style="font-size:15px;padding:13px 26px">View Licensing Guide</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="foot-brand">
+        <div class="logo"><div class="logo-mark" style="width:30px;height:30px"><svg width="13" height="13" viewBox="0 0 20 20" fill="none"><path d="M3 17L10 3L17 17" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 11.5H13.5" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg></div><span class="logo-name" style="font-size:17px">Mine<span>Zim</span></span></div>
+        <p>Zimbabwe's dedicated mining marketplace. Connecting the entire value chain — chemicals to investors, workers to buyers — across all 8 provinces.</p>
+        <div style="display:flex;gap:7px;flex-wrap:wrap"><span class="reg-badge" style="font-size:10px"><span class="dot"></span>MMCZ Registered</span><span class="reg-badge" style="font-size:10px"><span class="dot"></span>EMA Compliant</span></div>
+      </div>
+      <div class="foot-col">
+        <h4>Marketplace</h4>
+        <ul><li><a href="#">Chemicals &amp; Reagents</a></li><li><a href="#">Explosives</a></li><li><a href="#">Mine Sales</a></li><li><a href="#">Equipment</a></li><li><a href="#">Mineral Buyers</a></li></ul>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <ul><li><a href="#">Investors Hub</a></li><li><a href="#">Job Board</a></li><li><a href="#">Mining Services</a></li><li><a href="#">Industry News</a></li><li><a href="#">Gold Price Index</a></li></ul>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <ul><li><a href="#">About MineZim</a></li><li><a href="#">Licensing Guide</a></li><li><a href="#">Pricing Plans</a></li><li><a href="#">Contact Us</a></li><li><a href="#">Terms of Use</a></li></ul>
+      </div>
+    </div>
+    <div class="comp-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.5L1 19A2 2 0 003 22h18a2 2 0 001.7-3L13.7 3.5a2 2 0 00-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17.5" r="1" fill="currentColor" stroke="none"/></svg>
+      <div><strong style="color:var(--fg)">Regulatory Notice:</strong> The sale and purchase of explosives, cyanide, mercury, and other controlled substances requires valid permits under the Mines and Minerals Act [Chapter 21:05], Explosives Act [Chapter 10:08], and EMA Act [Chapter 20:27]. MineZim verifies all user credentials and document submissions; users who provide false documentation will be permanently banned and reported to the relevant authorities. All gold and diamond transactions are subject to MMCZ and Fidelity oversight.</div>
+    </div>
+    <div class="foot-bottom"><span>© 2026 MineZim Technologies (Pvt) Ltd · Registered in Zimbabwe</span><div style="display:flex;gap:12px"><a href="#" style="color:var(--fg-3);font-size:12px">Privacy Policy</a><a href="#" style="color:var(--fg-3);font-size:12px">Terms</a><a href="#" style="color:var(--fg-3);font-size:12px">Compliance</a></div></div>
+  </div>
+</footer>
+
+<script>
+// ============ TRANSLATIONS ============
+const T = {
+  en:{
+    navSearchPh:'Search chemicals, mines, investors…',navSearchBtn:'Search',
+    navSignIn:'Sign In',navRegister:'Register',navPost:'Post Listing',
+    ncAll:'All',ncChemicals:'Chemicals',ncExplosives:'Explosives',ncInvestments:'Investments',
+    ncMines:'Mine Sales',ncEquipment:'Equipment',ncWorkforce:'Workforce',ncBuyers:'Mineral Buyers',ncServices:'Services',
+    heroEyebrow:"Zimbabwe's #1 Mining Marketplace",heroH1a:'Connect. Trade.',heroH1b:'Mine Zimbabwe.',
+    heroSub:"Find chemicals, explosives, investors, buyers, workers, and mine assets — one compliant platform for Zimbabwe's entire mining value chain.",
+    hss0:'All Categories',hss1:'Chemicals & Reagents',hss2:'Explosives',hss3:'Investment Opportunities',
+    hss4:'Buy & Sell Mines',hss5:'Equipment & Machinery',hss6:'Workforce & Jobs',hss7:'Mineral Buyers',hss8:'Mining Services',
+    heroSearchPh:'e.g. sodium cyanide, gold concession, geologist…',heroSearchBtn:'Search',
+    tagGold:'Gold',tagDiamonds:'Diamonds',tagPlatinum:'Platinum',tagChrome:'Chrome',tagLithium:'Lithium',tagCoal:'Coal',tagNickel:'Nickel',
+    badgeMMCZ:'MMCZ Registered',badgeEMA:'EMA Compliant',badgeZMF:'ZMF Partner',badgeMCAZ:'MCAZ Licensed Sellers',
+    stat1Label:'Active Listings',stat2Label:'Verified Users',stat3Label:'Active Investors',stat4Label:'Deals Facilitated',stat5Label:'Provinces',
+    whoTitle:'Who Is MineZim For?',whoSub:'Register as the account type that fits your role — each type has specific verification requirements',whoRegister:'Register',
+    catSecTitle:'Browse by Category',catSecSub:"Everything Zimbabwe's mining industry needs",
+    cat1Name:'Chemicals & Reagents',cat1Ct:'482 listings · License required',
+    cat2Name:'Explosives & Blasting',cat2Ct:'134 listings · Strictly controlled',
+    cat3Name:'Investment Opportunities',cat3Ct:'218 listings · Registered users',
+    cat4Name:'Buy & Sell Mines',cat4Ct:'376 listings · MMCZ required',
+    cat5Name:'Equipment & Machinery',cat5Ct:'894 listings · Open to all',
+    cat6Name:'Workforce & Jobs',cat6Ct:'612 listings · Open to all',
+    cat7Name:'Mineral Buyers',cat7Ct:'287 listings · MMCZ buyers only',
+    cat8Name:'Mining Services',cat8Ct:'193 listings · Open to all',
+    lstSecTitle:'Featured Listings',lstSecSub:'Verified and active opportunities — compliance status shown on each listing',lstViewAll:'View All',
+    tabAll:'All',tabChemicals:'Chemicals',tabExplosives:'Explosives',tabInvestments:'Investments',tabMines:'Mine Sales',tabJobs:'Jobs',tabBuyers:'Mineral Buyers',
+    invSecTitle:'Open Investment Rounds',invSecSub:'Mines and projects actively seeking capital — verified mine titles on file',invAllOpp:'All Opportunities',
+    compSecTitle:'Licensing & Compliance Requirements',compSecSub:'What buyers and sellers must hold to transact on MineZim',
+    compThCat:'Category',compThAccess:'Access Level',compThBuyer:'Buyer Must Hold',compThSeller:'Seller Must Hold',
+    compLegStrict:'Strictly Controlled — Police/Ministry verification, 3–5 day approval',
+    compLegLicensed:'Licensed — Document upload, 1–2 day approval',
+    compLegOpen:'Open — Email verification only',
+    trustSecTitle:'Built for Zimbabwe Mining',trustSecSub:'Compliant, secure, and industry-specific from the ground up',
+    trust1Title:'Verified Accounts',
+    trust1Txt:'Every user is verified against their account type. Companies submit CR14 + ITF263. Miners submit AGML or Mining Location certificates. Explosives access requires ZRP clearance and Chief Inspector permit.',
+    trust2Title:'Compliance Gates',
+    trust2Txt:'Controlled substance listings are hidden from unverified users. Attempting to contact a seller of explosives or cyanide without the correct license on file is blocked and flagged automatically.',
+    trust3Title:'Regulatory Framework',
+    trust3Txt:'All listings enforced under the Mines and Minerals Act [Chapter 21:05], Explosives Act [Chapter 10:08], EMA Act [Chapter 20:27], and ZIMRA regulations. MMCZ oversight on all mineral transactions.',
+    ctaSecTitle:'Ready to Join MineZim?',ctaSecBody:"Register your account, upload your documents, and connect with Zimbabwe's mining community — buyers, sellers, investors, and workers in one place.",
+    ctaRegister:'Register Your Account',ctaGuide:'View Licensing Guide',
+    footBrandDesc:"Zimbabwe's dedicated mining marketplace. Connecting the entire value chain — chemicals to investors, workers to buyers — across all 8 provinces.",
+    footColMarketplace:'Marketplace',footColCommunity:'Community',footColCompany:'Company',
+    footLink1a:'Chemicals & Reagents',footLink1b:'Explosives',footLink1c:'Mine Sales',footLink1d:'Equipment',footLink1e:'Mineral Buyers',
+    footLink2a:'Investors Hub',footLink2b:'Job Board',footLink2c:'Mining Services',footLink2d:'Industry News',footLink2e:'Gold Price Index',
+    footLink3a:'About MineZim',footLink3b:'Licensing Guide',footLink3c:'Pricing Plans',footLink3d:'Contact Us',footLink3e:'Terms of Use',
+    footCopyright:'© 2026 MineZim Technologies (Pvt) Ltd · Registered in Zimbabwe',
+    footPrivacy:'Privacy Policy',footTerms:'Terms',footCompliance:'Compliance',
+    modalSubtitle:'Create Account',modalTitle:'Join MineZim',
+    step1Label:'Step 1 of 3 — Choose your account type',
+    step2Label:'Step 2 of 3 — Required documents & licenses',
+    step3Label:'Step 3 of 3 — Your details',
+    nextReq:'Next: View Requirements',contReg:'Continue to Registration',createAcct:'Create Account & Upload Documents',
+    back:'Back',docsRequired:'Documents Required for Verification',docsAccess:'What you can do on MineZim',
+    docReqMark:'R',docOptMark:'O',
+    docReqLegend:'Required before listing or purchasing',docOptLegend:'Optional / conditional',
+    fieldName:'Full Name / Company Name',fieldNamePh:'e.g. Sunshine Mining (Pvt) Ltd',
+    fieldEmail:'Email Address',fieldEmailPh:'email@company.co.zw',
+    fieldPhone:'Phone (WhatsApp)',fieldPhonePh:'+263 7X XXX XXXX',
+    fieldProvince:'Province',fieldProvOpt0:'Select province…',
+    fieldPassword:'Password',fieldPasswordPh:'Create a strong password',
+    successTitle:'Account Created',successBody:'Check your email for a verification link. Upload your documents from your dashboard to unlock full platform access.',goDashboard:'Go to Dashboard',
+    regLangTitle:'Choose Your Language',regLangSub:'Select the language for your account',
+  },
+  zh:{
+    navSearchPh:'搜索化学品、矿山、投资者…',navSearchBtn:'搜索',
+    navSignIn:'登录',navRegister:'注册',navPost:'发布列表',
+    ncAll:'全部',ncChemicals:'化学品',ncExplosives:'炸药',ncInvestments:'投资机会',
+    ncMines:'矿山买卖',ncEquipment:'设备机械',ncWorkforce:'劳动力',ncBuyers:'矿产买家',ncServices:'采矿服务',
+    heroEyebrow:'津巴布韦第一矿业市场',heroH1a:'连接。交易。',heroH1b:'开采津巴布韦。',
+    heroSub:'在合规平台上寻找化学品、炸药、投资者、买家、工人和矿山资产——服务津巴布韦整个采矿业价值链。',
+    hss0:'所有类别',hss1:'化学品与试剂',hss2:'炸药',hss3:'投资机会',
+    hss4:'矿山买卖',hss5:'设备与机械',hss6:'劳动力与工作',hss7:'矿产买家',hss8:'采矿服务',
+    heroSearchPh:'例如：氰化钠、黄金特许权、地质学家…',heroSearchBtn:'搜索',
+    tagGold:'黄金',tagDiamonds:'钻石',tagPlatinum:'铂金',tagChrome:'铬矿',tagLithium:'锂矿',tagCoal:'煤炭',tagNickel:'镍矿',
+    badgeMMCZ:'MMCZ注册认证',badgeEMA:'EMA环保合规',badgeZMF:'ZMF合作伙伴',badgeMCAZ:'MCAZ持牌卖家',
+    stat1Label:'在线列表',stat2Label:'认证用户',stat3Label:'活跃投资者',stat4Label:'促成交易额',stat5Label:'覆盖省份',
+    whoTitle:'MineZim适合谁？',whoSub:'根据您的角色选择账户类型 — 每种类型都有特定的验证要求',whoRegister:'注册',
+    catSecTitle:'按类别浏览',catSecSub:'津巴布韦采矿业所需的一切',
+    cat1Name:'化学品与试剂',cat1Ct:'482条列表 · 需要许可证',
+    cat2Name:'炸药与爆破材料',cat2Ct:'134条列表 · 严格管控',
+    cat3Name:'投资机会',cat3Ct:'218条列表 · 注册用户',
+    cat4Name:'矿山买卖',cat4Ct:'376条列表 · 需要MMCZ',
+    cat5Name:'设备与机械',cat5Ct:'894条列表 · 对所有人开放',
+    cat6Name:'劳动力与工作',cat6Ct:'612条列表 · 对所有人开放',
+    cat7Name:'矿产买家',cat7Ct:'287条列表 · 仅MMCZ买家',
+    cat8Name:'采矿服务',cat8Ct:'193条列表 · 对所有人开放',
+    lstSecTitle:'精选列表',lstSecSub:'经验证的活跃机会 — 每个列表显示合规状态',lstViewAll:'查看全部',
+    tabAll:'全部',tabChemicals:'化学品',tabExplosives:'炸药',tabInvestments:'投资',tabMines:'矿山买卖',tabJobs:'工作',tabBuyers:'矿产买家',
+    invSecTitle:'开放投资轮次',invSecSub:'正在积极寻求资金的矿山和项目 — 文件齐全的采矿权证',invAllOpp:'所有机会',
+    compSecTitle:'许可证与合规要求',compSecSub:'MineZim上买卖双方必须持有的证件',
+    compThCat:'类别',compThAccess:'访问级别',compThBuyer:'买方必须持有',compThSeller:'卖方必须持有',
+    compLegStrict:'严格管控 — 警察/部级核查，3-5个工作日审批',
+    compLegLicensed:'持牌 — 上传文件，1-2个工作日审批',
+    compLegOpen:'开放 — 仅需邮箱验证',
+    trustSecTitle:'专为津巴布韦采矿业打造',trustSecSub:'从零开始的合规、安全、行业专属平台',
+    trust1Title:'账户验证',
+    trust1Txt:'每位用户根据其账户类型进行身份验证。公司需提交CR14 + ITF263。矿工需提交AGML或采矿权证书。炸药访问权需ZRP许可证及总检察官许可证。',
+    trust2Title:'合规门控',
+    trust2Txt:'未经验证的用户无法看到管控物质列表。尝试在未持有正确许可证的情况下联系炸药或氰化物卖家将被自动拦截并标记。',
+    trust3Title:'监管框架',
+    trust3Txt:'所有列表均依据《矿产法》[第21:05章]、《炸药法》[第10:08章]、《环境管理法》[第20:27章]及ZIMRA法规执行。所有矿产交易受MMCZ监管。',
+    ctaSecTitle:'准备好加入MineZim了吗？',ctaSecBody:'注册账户，上传文件，与津巴布韦采矿社区联系——买家、卖家、投资者和工人，尽在一处。',
+    ctaRegister:'注册您的账户',ctaGuide:'查看许可证指南',
+    footBrandDesc:'津巴布韦专属矿业市场。连接整个价值链——从化学品到投资者，从工人到买家——覆盖全部8个省份。',
+    footColMarketplace:'市场',footColCommunity:'社区',footColCompany:'公司',
+    footLink1a:'化学品与试剂',footLink1b:'炸药',footLink1c:'矿山买卖',footLink1d:'设备',footLink1e:'矿产买家',
+    footLink2a:'投资者中心',footLink2b:'招聘信息',footLink2c:'采矿服务',footLink2d:'行业新闻',footLink2e:'黄金价格指数',
+    footLink3a:'关于MineZim',footLink3b:'许可证指南',footLink3c:'定价方案',footLink3d:'联系我们',footLink3e:'使用条款',
+    footCopyright:'© 2026 MineZim科技（私人）有限公司 · 注册于津巴布韦',
+    footPrivacy:'隐私政策',footTerms:'条款',footCompliance:'合规',
+    modalSubtitle:'创建账户',modalTitle:'加入MineZim',
+    step1Label:'第1步（共3步）— 选择账户类型',
+    step2Label:'第2步（共3步）— 所需文件和许可证',
+    step3Label:'第3步（共3步）— 您的信息',
+    nextReq:'下一步：查看要求',contReg:'继续注册',createAcct:'创建账户并上传文件',
+    back:'返回',docsRequired:'验证所需文件',docsAccess:'您在MineZim上可以做什么',
+    docReqMark:'必',docOptMark:'选',
+    docReqLegend:'上市或购买前必须提交',docOptLegend:'可选/条件性',
+    fieldName:'全名/公司名称',fieldNamePh:'例如：阳光矿业（私人）有限公司',
+    fieldEmail:'电子邮件地址',fieldEmailPh:'email@company.co.zw',
+    fieldPhone:'电话（WhatsApp）',fieldPhonePh:'+263 7X XXX XXXX',
+    fieldProvince:'省份',fieldProvOpt0:'选择省份…',
+    fieldPassword:'密码',fieldPasswordPh:'创建强密码',
+    successTitle:'账户已创建',successBody:'请查看您的电子邮件以获取验证链接。从您的仪表板上传文件以解锁完整平台访问权限。',goDashboard:'前往仪表板',
+    regLangTitle:'选择您的语言',regLangSub:'选择您账户的语言',
+  }
+};
+
+let currentLang='en';
+function t(k){return(T[currentLang]&&T[currentLang][k])||T.en[k]||k;}
+
+function applyLang(lang){
+  // Nav search
+  const nsi=document.querySelector('.nav-search input');if(nsi)nsi.placeholder=t('navSearchPh');
+  const nsb=document.querySelector('.nav-search button');if(nsb)nsb.textContent=t('navSearchBtn');
+  // Nav cats (preserve SVG)
+  const ncKeys=['ncAll','ncChemicals','ncExplosives','ncInvestments','ncMines','ncEquipment','ncWorkforce','ncBuyers','ncServices'];
+  document.querySelectorAll('.nav-cat').forEach((btn,i)=>{
+    if(!ncKeys[i])return;const svg=btn.querySelector('svg');btn.textContent=t(ncKeys[i]);if(svg)btn.prepend(svg);
+  });
+  // Hero eyebrow (preserve SVG)
+  const ew=document.querySelector('.eyebrow');
+  if(ew){const svg=ew.querySelector('svg');ew.textContent=t('heroEyebrow');if(svg)ew.prepend(svg);}
+  // Hero H1 (innerHTML for em tag)
+  const h1=document.querySelector('.hero h1');
+  if(h1)h1.innerHTML=t('heroH1a')+'<br><em>'+t('heroH1b')+'</em>';
+  // Hero sub
+  const hs=document.querySelector('.hero-sub');if(hs)hs.textContent=t('heroSub');
+  // Hero search select
+  const sel=document.querySelector('.hero-search select');
+  if(sel){['hss0','hss1','hss2','hss3','hss4','hss5','hss6','hss7','hss8'].forEach((k,i)=>{if(sel.options[i])sel.options[i].text=t(k);});}
+  const hsi=document.querySelector('.hero-search input');if(hsi)hsi.placeholder=t('heroSearchPh');
+  const hsb=document.querySelector('.hero-search .sbtn');if(hsb)hsb.textContent=t('heroSearchBtn');
+  // Hero tags (preserve .dot)
+  const tgKeys=['tagGold','tagDiamonds','tagPlatinum','tagChrome','tagLithium','tagCoal','tagNickel'];
+  document.querySelectorAll('.hero-tag').forEach((tag,i)=>{
+    if(!tgKeys[i])return;const dot=tag.querySelector('.dot');tag.textContent=t(tgKeys[i]);if(dot)tag.prepend(dot);
+  });
+  // Reg badges (preserve .dot) — hero (4) + footer (2)
+  const bdgKeys=['badgeMMCZ','badgeEMA','badgeZMF','badgeMCAZ','badgeMMCZ','badgeEMA'];
+  document.querySelectorAll('.reg-badge').forEach((b,i)=>{
+    if(!bdgKeys[i])return;const dot=b.querySelector('.dot');b.textContent=t(bdgKeys[i]);if(dot)b.prepend(dot);
+  });
+  // Stats labels
+  const slKeys=['stat1Label','stat2Label','stat3Label','stat4Label','stat5Label'];
+  document.querySelectorAll('.stat-label').forEach((el,i)=>{if(slKeys[i])el.textContent=t(slKeys[i]);});
+  // Section titles / subs (by DOM order)
+  const titKeys=['whoTitle','catSecTitle','lstSecTitle','invSecTitle','compSecTitle','trustSecTitle'];
+  document.querySelectorAll('.sec-title').forEach((el,i)=>{if(titKeys[i])el.textContent=t(titKeys[i]);});
+  const subKeys=['whoSub','catSecSub','lstSecSub','invSecSub','compSecSub','trustSecSub'];
+  document.querySelectorAll('.sec-sub').forEach((el,i)=>{if(subKeys[i])el.textContent=t(subKeys[i]);});
+  // Category cards
+  document.querySelectorAll('.cat-card').forEach((card,i)=>{
+    const nm=card.querySelector('.cat-nm');const ct=card.querySelector('.cat-ct');
+    if(nm)nm.textContent=t('cat'+(i+1)+'Name');if(ct)ct.textContent=t('cat'+(i+1)+'Ct');
+  });
+  // View All / All Opportunities
+  document.querySelectorAll('.btn-outline[style*="flex-shrink:0"]').forEach((btn,i)=>{
+    if(i===0)btn.textContent=t('lstViewAll');if(i===1)btn.textContent=t('invAllOpp');
+  });
+  // Listing tabs
+  const tabMap={all:'tabAll',chemicals:'tabChemicals',explosives:'tabExplosives',investments:'tabInvestments',mines:'tabMines',jobs:'tabJobs',buyers:'tabBuyers'};
+  document.querySelectorAll('.tab').forEach(tb=>{const k=tabMap[tb.dataset.f];if(k)tb.textContent=t(k);});
+  // Compliance table headers
+  const thKeys=['compThCat','compThAccess','compThBuyer','compThSeller'];
+  document.querySelectorAll('.comp-table th').forEach((th,i)=>{if(thKeys[i])th.textContent=t(thKeys[i]);});
+  // Compliance legend (preserve SVG)
+  const legKeys=['compLegStrict','compLegLicensed','compLegOpen'];
+  document.querySelectorAll('.leg-ico').forEach((el,i)=>{
+    if(!legKeys[i])return;const svg=el.querySelector('svg');el.textContent=t(legKeys[i]);if(svg)el.prepend(svg);
+  });
+  // Trust section
+  ['trust1Title','trust2Title','trust3Title'].forEach((k,i)=>{const el=document.querySelectorAll('.trust-title')[i];if(el)el.textContent=t(k);});
+  ['trust1Txt','trust2Txt','trust3Txt'].forEach((k,i)=>{const el=document.querySelectorAll('.trust-txt')[i];if(el)el.textContent=t(k);});
+  // CTA
+  const ctaH2=document.querySelector('.cta-wrap h2');if(ctaH2)ctaH2.textContent=t('ctaSecTitle');
+  const ctaP=document.querySelector('.cta-wrap p');if(ctaP)ctaP.textContent=t('ctaSecBody');
+  const ctaReg=document.getElementById('ctaRegister');if(ctaReg)ctaReg.textContent=t('ctaRegister');
+  const ctaGuideBtn=document.querySelector('.cta-btns .btn-outline');if(ctaGuideBtn)ctaGuideBtn.textContent=t('ctaGuide');
+  // Footer
+  const fbP=document.querySelector('.foot-brand p');if(fbP)fbP.textContent=t('footBrandDesc');
+  const fh4s=document.querySelectorAll('.foot-col h4');
+  ['footColMarketplace','footColCommunity','footColCompany'].forEach((k,i)=>{if(fh4s[i])fh4s[i].textContent=t(k);});
+  const c1l=document.querySelectorAll('.footer-grid .foot-col:nth-child(2) a');
+  ['footLink1a','footLink1b','footLink1c','footLink1d','footLink1e'].forEach((k,i)=>{if(c1l[i])c1l[i].textContent=t(k);});
+  const c2l=document.querySelectorAll('.footer-grid .foot-col:nth-child(3) a');
+  ['footLink2a','footLink2b','footLink2c','footLink2d','footLink2e'].forEach((k,i)=>{if(c2l[i])c2l[i].textContent=t(k);});
+  const c3l=document.querySelectorAll('.footer-grid .foot-col:nth-child(4) a');
+  ['footLink3a','footLink3b','footLink3c','footLink3d','footLink3e'].forEach((k,i)=>{if(c3l[i])c3l[i].textContent=t(k);});
+  const fCopy=document.querySelector('.foot-bottom span');if(fCopy)fCopy.textContent=t('footCopyright');
+  const fLinks=document.querySelectorAll('.foot-bottom a');
+  ['footPrivacy','footTerms','footCompliance'].forEach((k,i)=>{if(fLinks[i])fLinks[i].textContent=t(k);});
+  // Modal head
+  const mSub=document.getElementById('modalSubLabel');if(mSub)mSub.textContent=t('modalSubtitle');
+  const mTitle=document.getElementById('modalTitleEl');if(mTitle)mTitle.textContent=t('modalTitle');
+  // Step labels
+  const ms1Lbl=document.querySelector('#ms1 .step-label');if(ms1Lbl)ms1Lbl.textContent=t('step1Label');
+  const ms2Lbl=document.querySelector('#ms2 .step-label');if(ms2Lbl)ms2Lbl.textContent=t('step2Label');
+  const ms3Lbl=document.querySelector('#ms3 .step-label');if(ms3Lbl)ms3Lbl.textContent=t('step3Label');
+  // Step 1 button
+  const toS2=document.getElementById('toStep2');if(toS2)toS2.textContent=t('nextReq');
+  // Step 2 static headings
+  const ms2DT=document.getElementById('ms2DocsTitle');if(ms2DT)ms2DT.textContent=t('docsRequired');
+  const ms2AT=document.getElementById('ms2AccessTitle');if(ms2AT)ms2AT.textContent=t('docsAccess');
+  // Step 2 legend row
+  const lr=document.getElementById('docLegendRow');
+  if(lr)lr.innerHTML='<span style="display:inline-flex;align-items:center;gap:4px"><span class="doc-req must" style="width:14px;height:14px;font-size:9px">'+t('docReqMark')+'</span> '+t('docReqLegend')+'</span> &nbsp; <span style="display:inline-flex;align-items:center;gap:4px"><span class="doc-req opt" style="width:14px;height:14px;font-size:9px">'+t('docOptMark')+'</span> '+t('docOptLegend')+'</span>';
+  // Step 2 buttons
+  const b1=document.getElementById('backToStep1');if(b1)b1.textContent=t('back');
+  const ts3=document.getElementById('toStep3');if(ts3)ts3.textContent=t('contReg');
+  // Step 3 form fields
+  const fn=document.getElementById('f-name');
+  if(fn){fn.placeholder=t('fieldNamePh');const lbl=fn.previousElementSibling;if(lbl)lbl.textContent=t('fieldName');}
+  const fe=document.getElementById('f-email');
+  if(fe){fe.placeholder=t('fieldEmailPh');const lbl=fe.previousElementSibling;if(lbl)lbl.textContent=t('fieldEmail');}
+  const fp=document.getElementById('f-phone');
+  if(fp){fp.placeholder=t('fieldPhonePh');const lbl=fp.previousElementSibling;if(lbl)lbl.textContent=t('fieldPhone');}
+  const fpr=document.getElementById('f-prov');
+  if(fpr){const lbl=fpr.previousElementSibling;if(lbl)lbl.textContent=t('fieldProvince');if(fpr.options[0])fpr.options[0].text=t('fieldProvOpt0');}
+  const fpass=document.getElementById('f-pass');
+  if(fpass){fpass.placeholder=t('fieldPasswordPh');const lbl=fpass.previousElementSibling;if(lbl)lbl.textContent=t('fieldPassword');}
+  // Step 3 info box (use innerHTML to allow bold in both languages)
+  const rib=document.getElementById('regInfoBox');
+  if(rib){
+    if(lang==='zh')rib.innerHTML='注册后，您将被提示上传所需文件。您的账户将在<strong style="color:var(--fg)">1-2个工作日</strong>内完成审核。只有在验证完成后才能访问管控类列表。';
+    else rib.innerHTML='After registration you will be prompted to upload your required documents. Your account will be reviewed within <strong style="color:var(--fg)">1–2 business days</strong>. Access to controlled listings is granted only after verification is complete.';
+  }
+  // Step 3 buttons
+  const b2=document.getElementById('backToStep2');if(b2)b2.textContent=t('back');
+  const sub=document.getElementById('submitReg');if(sub)sub.textContent=t('createAcct');
+  // Step 4 success
+  const sT=document.getElementById('successTitle');if(sT)sT.textContent=t('successTitle');
+  const sB=document.getElementById('successBody');if(sB)sB.textContent=t('successBody');
+  const sCl=document.getElementById('closeSuccess');if(sCl)sCl.textContent=t('goDashboard');
+}
+
+function setLang(lang){
+  currentLang=lang;
+  try{localStorage.setItem('mz_lang',lang);}catch(e){}
+  document.body.classList.toggle('lang-zh',lang==='zh');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');el.textContent=t(k);
+  });
+  document.querySelectorAll('.lang-pill').forEach(p=>{p.classList.toggle('active',p.dataset.lang===lang);});
+  applyLang(lang);
+  renderWhoGrid();
+  renderRoleGrid();
+}
+
+function chooseLang(lang){
+  setLang(lang);
+  document.getElementById('langModal').hidden=true;
+  document.body.style.overflow='';
+}
+
+function initLang(){
+  let saved;
+  try{saved=localStorage.getItem('mz_lang');}catch(e){}
+  if(!saved){
+    document.getElementById('langModal').hidden=false;
+    document.body.style.overflow='hidden';
+  } else {
+    setLang(saved);
+  }
+}
+
+// ============ ICON SVG LIBRARY ============
+const SVG = {
+  flask:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M9.5 3v7.5L5 18a2 2 0 001.9 2.5h10.2A2 2 0 0019 18l-4.5-7.5V3"/><line x1="7.5" y1="13" x2="16.5" y2="13"/></svg>`,
+  lightning:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+  trendingUp:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 8 12 13 14.5 21 6"/><polyline points="17 6 21 6 21 10"/></svg>`,
+  mapPin:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.7 2 6 4.7 6 8c0 5.5 6 13 6 13s6-7.5 6-13c0-3.3-2.7-6-6-6z"/><circle cx="12" cy="8" r="2.5"/></svg>`,
+  person:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M6.5 21v-2a4.5 4.5 0 014.5-4.5h2a4.5 4.5 0 014.5 4.5v2"/></svg>`,
+  gem:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 20 9 12 22 4 9"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="8.5" y1="9" x2="12" y2="2"/><line x1="15.5" y1="9" x2="12" y2="2"/></svg>`,
+  building:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="1"/><path d="M3 9h18"/><path d="M9 21V13h6v8"/><line x1="8" y1="6.5" x2="8" y2="6.6"/><line x1="12" y1="6.5" x2="12" y2="6.6"/><line x1="16" y1="6.5" x2="16" y2="6.6"/></svg>`,
+  pickaxe:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 3.5l6 6"/><path d="M4 20l16-16"/><path d="M20.5 3.5a2 2 0 010 2.8L18 8.8l-2.8-2.8 2.5-2.5a2 2 0 012.8 0z"/><path d="M4 20l5-5"/></svg>`,
+  hardHat:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12a7 7 0 0114 0"/><path d="M3 16h18"/><path d="M5.5 16v-4"/><path d="M18.5 16v-4"/><path d="M12 5v3"/></svg>`,
+  briefcase:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="20" height="13" rx="2"/><path d="M9 8V6a3 3 0 016 0v2"/><line x1="2" y1="14" x2="22" y2="14"/></svg>`,
+  barChart:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="6" width="4" height="15"/><rect x="17" y="2" width="4" height="19"/></svg>`,
+  alertTriangle:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.5L1 19A2 2 0 003 22h18a2 2 0 001.7-3L13.7 3.5a2 2 0 00-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17.5" r="1" fill="currentColor" stroke="none"/></svg>`,
+  wrench:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l2.9-2.9A5.5 5.5 0 0113.7 14l-6 6a2 2 0 01-2.8-2.8l6-6A5.5 5.5 0 0117.9 4z"/></svg>`,
+  checkTick:`<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 7 5.5 10.5 12 3.5"/></svg>`,
+  crossX:`<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/></svg>`,
+};
+
+const CAT_ICONS = {
+  chemicals: SVG.flask,
+  explosives: SVG.lightning,
+  investments: SVG.trendingUp,
+  mines: SVG.mapPin,
+  jobs: SVG.person,
+  buyers: SVG.gem,
+};
+
+// ============ ROLES DATA ============
+const ROLES = [
+  {id:'company', icon:SVG.building, name:'Mining Company', name_zh:'采矿公司', sub:'Registered corporate mine operator', sub_zh:'注册公司矿山运营商',
+   warn:null,
+   docs:[
+    {t:'Certificate of Incorporation (CR14)',r:true},
+    {t:'Tax Clearance Certificate — ITF263 (ZIMRA)',r:true},
+    {t:'MMCZ Registration Certificate',r:true},
+    {t:'Mining Title (Special Grant or Mining Location)',r:true},
+    {t:'EMA Environmental Management Certificate',r:true},
+    {t:'NSSA Employer Registration',r:true},
+    {t:'Chief Inspector of Explosives Permit',r:false,note:'Only if purchasing explosives'},
+    {t:'MCAZ Controlled Substance Licence',r:false,note:'Only if purchasing cyanide/reagents'},
+   ],
+   access:['Post mine sales, claims and concessions','Buy chemicals and reagents (with MCAZ licence)','Buy explosives (with Chief Inspector permit)','Post job vacancies and hire workers','Seek investors and JV partners','List equipment for sale or rent'],
+   deny:[]},
+  {id:'artisanal', icon:SVG.pickaxe, name:'Artisanal / Small-Scale Miner', name_zh:'手工/小规模矿工', sub:'Individual miner with AGML or mining title', sub_zh:'持有AGML或采矿权证的个人矿工',
+   warn:null,
+   docs:[
+    {t:'National Identity Document (ID)',r:true},
+    {t:'Alluvial Gold Mining Licence (AGML) or Mining Location Certificate',r:true},
+    {t:'MMCZ Registration Certificate',r:true},
+    {t:'Zimbabwe Miners Federation (ZMF) Membership Card',r:false,note:'Strongly recommended'},
+   ],
+   access:['Post mineral listings (gold, chrome, etc.)','Sell minerals via MMCZ-registered buyers','Find buyers on the platform','Apply for mining jobs'],
+   deny:['Cannot purchase explosives','Cannot purchase cyanide or controlled chemicals']},
+  {id:'employee', icon:SVG.hardHat, name:'Mine Worker / Job Seeker', name_zh:'矿山工人/求职者', sub:'Individual seeking mining employment', sub_zh:'寻求采矿就业的个人',
+   warn:null,
+   docs:[
+    {t:'National Identity Document (ID)',r:true},
+    {t:'Trade Test Certificate or Academic Qualifications',r:false,note:'Required to apply for professional roles'},
+    {t:'Mine Safety Certificate (Ministry of Mines)',r:false,note:'Required for underground/surface roles'},
+    {t:'ZPEPA Blasting Certificate',r:false,note:'Only for blasting supervisor roles'},
+   ],
+   access:['Browse all job listings','Post your CV and work profile','Contact employers directly','Receive job alerts by province'],
+   deny:['Cannot purchase any chemicals or explosives','Cannot post non-job listings']},
+  {id:'employer', icon:SVG.briefcase, name:'Mine Owner / Employer', name_zh:'矿主/雇主', sub:'Company or individual hiring mining workers', sub_zh:'招聘矿山工人的公司或个人',
+   warn:null,
+   docs:[
+    {t:'Certificate of Incorporation (CR14) or National ID',r:true},
+    {t:'Valid Mining Title or Authority to Operate',r:true},
+    {t:'NSSA Employer Registration',r:true},
+    {t:'Tax Clearance Certificate — ITF263',r:true},
+    {t:"Workmen's Compensation Insurance (NSSA)",r:true},
+   ],
+   access:['Post job vacancies','Browse and contact workers','Access CV database','Post mine sales and investment listings'],
+   deny:[]},
+  {id:'investor', icon:SVG.barChart, name:'Investor', name_zh:'投资者', sub:'Individual or entity seeking investment opportunities', sub_zh:'寻求投资机会的个人或实体',
+   warn:null,
+   docs:[
+    {t:'National Passport or ID',r:true},
+    {t:'ZIMRA Tax Registration Number',r:true},
+    {t:'Reserve Bank of Zimbabwe (RBZ) Approval',r:false,note:'Required for foreign investors only'},
+    {t:'Certificate of Incorporation (CR14)',r:false,note:'If investing via a registered company'},
+    {t:'KYC / Source of Funds Declaration',r:true},
+   ],
+   access:['Browse all investment opportunities','View detailed mine due diligence documents','Contact mine owners directly','Track investment progress on dashboard'],
+   deny:['Cannot purchase chemicals, explosives or minerals directly']},
+  {id:'buyer', icon:SVG.gem, name:'Mineral Buyer', name_zh:'矿产买家', sub:'Licensed buyer of gold, diamonds, chrome, and other minerals', sub_zh:'持牌黄金、钻石、铬及其他矿产买家',
+   warn:null,
+   docs:[
+    {t:'Certificate of Incorporation (CR14)',r:true},
+    {t:'MMCZ Mineral Buyer / Dealer Licence',r:true},
+    {t:'Tax Clearance Certificate — ITF263',r:true},
+    {t:'Fidelity Printers & Refiners Licence',r:false,note:'Required to buy gold'},
+    {t:'Kimberley Process Certificate (KPCS)',r:false,note:'Required to buy diamonds'},
+    {t:'RBZ Foreign Currency Licence',r:false,note:'Required to export purchased minerals'},
+   ],
+   access:['Post buying advertisements','Receive seller inquiries','Conduct licensed mineral transactions','Access verified seller profiles'],
+   deny:['Cannot purchase explosives or controlled chemicals']},
+  {id:'chem', icon:SVG.flask, name:'Chemical / Equipment Supplier', name_zh:'化学品/设备供应商', sub:'Registered supplier of mining chemicals or equipment', sub_zh:'注册采矿化学品或设备供应商',
+   warn:null,
+   docs:[
+    {t:'Certificate of Incorporation (CR14)',r:true},
+    {t:'Tax Clearance Certificate — ITF263 (ZIMRA)',r:true},
+    {t:'MCAZ Controlled Substance Permit',r:true,note:'Required to list cyanide, mercury or acids'},
+    {t:'EMA Environmental Compliance Certificate',r:true},
+    {t:'ZIMRA VAT Registration',r:false,note:'Required for companies with turnover > $60K/yr'},
+   ],
+   access:['List chemicals and reagents (non-explosive)','List equipment and machinery','Receive verified buyer inquiries','Manage bulk order requests'],
+   deny:['Cannot list explosives — requires separate Explosives Supplier account']},
+  {id:'expl', icon:SVG.alertTriangle, name:'Explosives Supplier', name_zh:'炸药供应商', sub:'Licensed manufacturer or distributor of explosives', sub_zh:'持牌炸药制造商或分销商',
+   warn:'Access to this account type is subject to ZRP and Chief Inspector of Explosives pre-approval. MineZim will contact the relevant authorities to verify your licence before activation. Any fraudulent application is an offence under the Explosives Act [Chapter 10:08].',
+   docs:[
+    {t:'Certificate of Incorporation (CR14)',r:true},
+    {t:'Chief Inspector of Explosives Manufacture/Storage Licence',r:true},
+    {t:'ZRP (Zimbabwe Republic Police) Clearance Certificate',r:true},
+    {t:'Approved Explosives Magazine / Storage Facility Certificate',r:true},
+    {t:'Approved Delivery Vehicle Registration',r:true},
+    {t:'MCAZ Controlled Substance Permit',r:true},
+    {t:'Site Security Plan (ZRP-approved)',r:true},
+   ],
+   access:['List approved explosives products','Supply only to verified mine operators with valid permits','Manage licensed delivery manifest records'],
+   deny:['Cannot sell to any unverified buyer','All transactions reported to Chief Inspector of Explosives']},
+];
+
+// ============ LISTINGS DATA ============
+const DATA = [
+  {id:1,f:'chemicals',bs:['Chemicals','Verified'],t:'Sodium Cyanide (NaCN) — Bulk Mining Grade',loc:'Harare Industrial',prov:'Harare Metro',price:'From $45/kg',unit:'50kg bags min order',seller:'ChemTrade Zimbabwe',si:'CT',v:'342 views',comp:{level:'restricted',label:'MCAZ + EMA Certificate required to purchase'}},
+  {id:2,f:'investments',bs:['Investment','Featured'],t:'Chrome Mine — 40% Stake Available, Mashonaland West',loc:'Chinhoyi Area',prov:'Mashonaland West',price:'$2.1M',unit:'40% equity stake',seller:'Mhondoro Resources',si:'MR',v:'1,204 views',comp:{level:'licensed',label:'ZIMRA registration required to invest'}},
+  {id:3,f:'mines',bs:['Mine Sale','Verified'],t:'Gold Concession 50ha — Mazowe District, Active Operation',loc:'Mazowe Valley',prov:'Mashonaland Central',price:'$1.2M',unit:'Freehold title deed',seller:'Mazowe Gold Holdings',si:'MG',v:'876 views',comp:{level:'licensed',label:'MMCZ registration required to purchase'}},
+  {id:4,f:'explosives',bs:['Explosives','MCAZ Licensed'],t:'ANFO Explosives — Bulk Delivery, Next-Day Harare',loc:'Harare / Nationwide',prov:'All Provinces',price:'On Quote',unit:'Min. 500kg order',seller:'SafeBlast Zimbabwe',si:'SB',v:'218 views',comp:{level:'restricted',label:'Chief Inspector permit + Mine Manager certificate required'}},
+  {id:5,f:'jobs',bs:['Jobs','Urgent'],t:'15 Underground Hard Rock Miners Needed — Zvishavane',loc:'Zvishavane',prov:'Midlands Province',price:'$850/month',unit:'+ accommodation + transport',seller:'Mimosa Mine (Pvt)',si:'MM',v:'2,840 views',comp:{level:'open',label:'Open to all registered job seekers'}},
+  {id:6,f:'buyers',bs:['Gold Buyer','Verified'],t:'Gold Buyer — Competitive Spot Rates, Daily Settlement',loc:'Harare CBD',prov:'Harare Metro',price:'Spot Rate',unit:'Per gram (LBMA ref.)',seller:'Fidelity Gold Refinery',si:'FG',v:'4,120 views',comp:{level:'restricted',label:'MMCZ-registered sellers only · Must sell via Fidelity'}},
+  {id:7,f:'chemicals',bs:['Chemicals','Verified'],t:'Activated Carbon — Gold Processing Grade, 1-tonne bags',loc:'Gweru',prov:'Midlands Province',price:'$8.50/kg',unit:'FCR Gweru; delivery available',seller:'MidChem Supplies',si:'MC',v:'188 views',comp:{level:'licensed',label:'Mining company or MMCZ-registered buyer required'}},
+  {id:8,f:'investments',bs:['Investment','New'],t:'Lithium Spodumene Project — Bikita District, Seed Round',loc:'Bikita',prov:'Masvingo Province',price:'$500K',unit:'Seed round open',seller:'Bikita Minerals Ltd',si:'BM',v:'934 views',comp:{level:'licensed',label:'ZIMRA tax registration required · RBZ approval for foreigners'}},
+  {id:9,f:'mines',bs:['Mine Sale'],t:'Chrome Claims 120ha — Great Dyke, Mashonaland West',loc:'Mutorashanga',prov:'Mashonaland West',price:'$3.5M',unit:'Pegged & surveyed',seller:'Dyke Claims Brokers',si:'DC',v:'542 views',comp:{level:'licensed',label:'MMCZ registration + Ministry of Mines consent required'}},
+  {id:10,f:'jobs',bs:['Jobs','Professional'],t:'Senior Mining Geologist — Midlands Gold Project',loc:'Gweru / Mine Site',prov:'Midlands Province',price:'$2,200/month',unit:'+ benefits + housing allowance',seller:'AfrAsia Mining Corp',si:'AM',v:'1,560 views',comp:{level:'open',label:'Open to qualified professionals · BSc Geology required'}},
+  {id:11,f:'buyers',bs:['Diamond Buyer','MMCZ Licensed'],t:'Diamond Melee Buyer — Certified, Marange & Artisanal',loc:'Mutare',prov:'Manicaland Province',price:'Per Carat',unit:'GIA certificates preferred',seller:'Eastern Gem Trading',si:'EG',v:'782 views',comp:{level:'restricted',label:'KPCS certificate + MMCZ buyer licence required'}},
+  {id:12,f:'explosives',bs:['Explosives','MCAZ Licensed'],t:'Electric Detonators & Initiators — Safety Certified Stock',loc:'Bulawayo',prov:'Matabeleland North',price:'$2.80/unit',unit:'Per detonator, bulk discount',seller:'BulBlast Supply Co.',si:'BB',v:'156 views',comp:{level:'restricted',label:'Chief Inspector of Explosives permit required'}},
+];
+
+// ============ WHO GRID ============
+function renderWhoGrid(){
+  document.getElementById('whoGrid').innerHTML = ROLES.map(r=>`
+    <div class="who-card" onclick="openRegModal('${r.id}')">
+      <div class="who-icon">${r.icon}</div>
+      <div class="who-name">${currentLang==='zh'&&r.name_zh?r.name_zh:r.name}</div>
+      <div class="who-sub">${currentLang==='zh'&&r.sub_zh?r.sub_zh:r.sub}</div>
+      <div class="who-action"><span class="btn btn-outline btn-sm" style="font-size:11px;padding:4px 10px">${t('whoRegister')}</span></div>
+    </div>
+  `).join('');
+}
+renderWhoGrid();
+
+// ============ LISTING CARDS ============
+function bc(b){
+  if(b==='Verified'||b.includes('Licensed')||b==='MMCZ Licensed') return 'bdg-ok';
+  if(b==='New'||b==='Featured') return 'bdg-new';
+  if(b==='Urgent') return 'bdg-hot';
+  return 'bdg-cat';
+}
+function compIcon(level){
+  if(level==='restricted') return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>`;
+  if(level==='licensed') return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l8 3v6c0 5-8 10-8 10S4 16 4 11V5l8-3z"/></svg>`;
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>`;
+}
+function render(f){
+  const g=document.getElementById('grid');
+  const items=(f==='all'?DATA:DATA.filter(d=>d.f===f)).slice(0,6);
+  g.innerHTML=items.map(d=>`
+    <div class="lst-card">
+      <div class="lst-banner banner-${d.f}"><div class="lst-icon">${CAT_ICONS[d.f]||SVG.wrench}</div></div>
+      <div class="lst-body">
+        <div class="badges">${d.bs.map(b=>`<span class="bdg ${bc(b)}">${b}</span>`).join('')}</div>
+        <div class="lst-title">${d.t}</div>
+        <div class="lst-meta"><span>${d.loc}</span><span>${d.prov}</span></div>
+        <div class="lst-price">${d.price} <small>${d.unit}</small></div>
+      </div>
+      <div class="lst-comp ${d.comp.level}">${compIcon(d.comp.level)} ${d.comp.label}</div>
+      <div class="lst-foot">
+        <div class="seller"><div class="av">${d.si}</div>${d.seller}</div>
+        <span>${d.v}</span>
+      </div>
+    </div>
+  `).join('');
+}
+document.getElementById('tabs').addEventListener('click',e=>{
+  const t=e.target.closest('.tab');
+  if(!t)return;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  render(t.dataset.f);
+});
+render('all');
+
+// ============ REGISTRATION MODAL ============
+let selectedRole=null, currentStep=0;
+openRegModal._pendingRole=null;
+
+function setStep(n){
+  currentStep=n;
+  ['ms0','ms1','ms2','ms3','ms4'].forEach((id,i)=>{
+    document.getElementById(id).classList.toggle('active',i===n);
+  });
+  document.getElementById('stepsInd').hidden=(n===0||n===4);
+  if(n>=1&&n<=3){
+    [1,2,3].forEach(i=>{
+      const dot=document.getElementById('sn'+i);
+      const line=document.getElementById('sl'+i);
+      dot.classList.toggle('done',i<n);
+      dot.classList.toggle('active',i===n);
+      if(line) line.classList.toggle('done',i<n);
+    });
+  }
+}
+
+function pickLangAndContinue(lang){
+  setLang(lang);
+  setStep(1);
+  const pending=openRegModal._pendingRole;
+  if(pending){
+    openRegModal._pendingRole=null;
+    setTimeout(()=>{
+      const card=document.querySelector(`.role-card[data-role="${pending}"]`);
+      if(card) card.click();
+    },60);
+  }
+}
+
+function openRegModal(roleId){
+  document.getElementById('regModal').hidden=false;
+  document.body.style.overflow='hidden';
+  setStep(0);
+  selectedRole=null;
+  document.querySelectorAll('.role-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('toStep2').disabled=true;
+  if(roleId) openRegModal._pendingRole=roleId;
+}
+function closeModal(){
+  document.getElementById('regModal').hidden=true;
+  document.body.style.overflow='';
+}
+
+document.getElementById('modalClose').onclick=closeModal;
+document.getElementById('regModal').addEventListener('click',e=>{
+  if(e.target===document.getElementById('regModal')) closeModal();
+});
+
+// Build role grid
+function renderRoleGrid(){
+  const selId=selectedRole?selectedRole.id:null;
+  document.getElementById('roleGrid').innerHTML=ROLES.map(r=>`
+    <div class="role-card${selId===r.id?' selected':''}" data-role="${r.id}" onclick="selectRole('${r.id}')">
+      <div class="role-icon">${r.icon}</div>
+      <div class="role-nm">${currentLang==='zh'&&r.name_zh?r.name_zh:r.name}</div>
+    </div>
+  `).join('');
+}
+renderRoleGrid();
+
+function selectRole(id){
+  selectedRole=ROLES.find(r=>r.id===id);
+  document.querySelectorAll('.role-card').forEach(c=>{
+    c.classList.toggle('selected',c.dataset.role===id);
+  });
+  document.getElementById('toStep2').disabled=false;
+}
+
+document.getElementById('toStep2').onclick=function(){
+  if(!selectedRole) return;
+  document.getElementById('roleIcoDisp').innerHTML=selectedRole.icon;
+  document.getElementById('roleName').textContent=currentLang==='zh'&&selectedRole.name_zh?selectedRole.name_zh:selectedRole.name;
+  document.getElementById('roleSub').textContent=currentLang==='zh'&&selectedRole.sub_zh?selectedRole.sub_zh:selectedRole.sub;
+  const warn=document.getElementById('ctrlWarn');
+  if(selectedRole.warn){warn.hidden=false;document.getElementById('ctrlWarnTxt').textContent=selectedRole.warn;}
+  else{warn.hidden=true;}
+  document.getElementById('docsList').innerHTML=selectedRole.docs.map(d=>`
+    <div class="doc-item">
+      <div class="doc-req ${d.r?'must':'opt'}">${d.r?'R':'O'}</div>
+      <div class="doc-txt">
+        <div class="doc-name">${d.t}</div>
+        ${d.note?`<div class="doc-note">${d.note}</div>`:''}
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('accessList').innerHTML=[
+    ...selectedRole.access.map(a=>`<div class="access-item"><div class="access-tick">${SVG.checkTick}</div><span>${a}</span></div>`),
+    ...selectedRole.deny.map(a=>`<div class="access-item"><div class="access-cross">${SVG.crossX}</div><span style="color:var(--fg-3)">${a}</span></div>`)
+  ].join('');
+  setStep(2);
+};
+
+document.getElementById('backToStep1').onclick=()=>setStep(1);
+document.getElementById('toStep3').onclick=()=>setStep(3);
+document.getElementById('backToStep2').onclick=()=>setStep(2);
+document.getElementById('submitReg').onclick=()=>setStep(4);
+document.getElementById('closeSuccess').onclick=closeModal;
+
+['navRegister','navPost','ctaRegister'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el) el.onclick=()=>openRegModal(null);
+});
+document.getElementById('navSignIn').onclick=()=>openRegModal(null);
+
+initLang();
+</script>
